@@ -1,0 +1,241 @@
+---
+interface Slide {
+  imagem: string;
+  /** Foto alternativa só para o mobile (opcional). */
+  imagemMobile?: string;
+  alt?: string;
+  /** Enquadramento no desktop, "X% Y%" (ex: "50% 25%"). */
+  pos?: string;
+  /** Enquadramento no mobile, "X% Y%". Se omitido, usa `pos`. */
+  posMobile?: string;
+}
+
+interface Props {
+  titulo: string;
+  subtitulo?: string;
+  /** Chips exibidos abaixo do subtítulo. */
+  destaques?: string[];
+  slides: Slide[];
+
+  /** Tempo entre as fotos, em milissegundos. */
+  intervalo?: number;
+
+  /** Escurecimento sobre a foto (qualquer valor CSS de `background`). Padrão: escuro embaixo, claro em cima. */
+  overlay?: string;
+
+  /** Espaço (px) entre o texto e a borda de baixo da tela. */
+  paddingBottomMobile?: number;
+  paddingBottomDesktop?: number;
+
+  tituloTamanho?: string;
+  subtituloTamanho?: string;
+  id?: string;
+}
+
+// Escurecimento padrão: forte embaixo (texto legível), clareando até quase nada no topo.
+// Para ajustar: mude os valores de opacidade (0 a 1) e as posições (%).
+const overlayPadrao =
+  "linear-gradient(to top, rgb(0 0 0 / 0.78) 0%, rgb(0 0 0 / 0.5) 30%, rgb(0 0 0 / 0.15) 65%, rgb(0 0 0 / 0) 100%)";
+
+const {
+  titulo,
+  subtitulo,
+  destaques = [],
+  slides,
+  intervalo = 5000,
+  overlay = overlayPadrao,
+  paddingBottomMobile = 60,
+  paddingBottomDesktop = 64,
+  tituloTamanho = "text-[42px] md:text-[62px]",
+  subtituloTamanho = "text-[18px] md:text-[22px]",
+  id = "home",
+} = Astro.props;
+
+const temVarios = slides.length > 1;
+---
+
+<section
+  id={id}
+  data-hero-slider
+  data-intervalo={intervalo}
+  class="relative h-[calc(100svh-64px)] md:h-[calc(100svh-80px)] overflow-hidden bg-black"
+  style={`--pb-mobile:${paddingBottomMobile}px;--pb-desktop:${paddingBottomDesktop}px`}
+>
+
+  <!-- Fotos + escurecimento -->
+  <div class="absolute inset-0">
+    {slides.map((slide, i) => (
+      <picture class:list={["hs-slide absolute inset-0 block", i === 0 && "is-active"]} data-slide aria-hidden={i === 0 ? undefined : "true"}>
+        {slide.imagemMobile && <source media="(max-width: 767px)" srcset={slide.imagemMobile} />}
+        <img
+          src={slide.imagem}
+          alt={slide.alt ?? ""}
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchpriority={i === 0 ? "high" : undefined}
+          class="hs-img h-full w-full object-cover"
+          style={`--pos-m:${slide.posMobile ?? slide.pos ?? "50% 50%"};--pos-d:${slide.pos ?? "50% 50%"}`}
+        />
+      </picture>
+    ))}
+    <!-- z-[2]: o escurecimento precisa ficar ACIMA das fotos (a foto ativa usa z-index 1) -->
+    <div class="absolute inset-0 z-[2]" style={`background:${overlay}`}></div>
+  </div>
+
+  <!-- Texto -->
+  <div class="hs-content relative z-10 flex h-full items-end text-white">
+    <div class="w-full">
+      <h1
+        class:list={["font-big font-[700] leading-[1.1] animate-fade-up", tituloTamanho]}
+        set:html={titulo}
+      ></h1>
+
+      {subtitulo && (
+        <p
+          class:list={[
+            "font-sans tracking-tight mt-[8px] text-white font-[400] max-w-[768px] animate-fade-up [animation-delay:400ms]",
+            subtituloTamanho,
+          ]}
+          set:html={subtitulo}
+        ></p>
+      )}
+
+      {destaques.length > 0 && (
+        <ul class="mt-[20px] flex flex-wrap gap-[8px] md:gap-[12px] animate-fade-up [animation-delay:600ms]">
+          {destaques.map((item) => (
+            <li class="rounded-full border border-white/30 bg-white/10 px-[14px] py-[6px] font-sans text-[14px] backdrop-blur-[10px] md:px-[18px] md:py-[8px] md:text-[16px]">{item}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+
+  <!-- Botão pause / play (canto inferior direito) -->
+  {temVarios && (
+    <button
+      type="button"
+      data-toggle
+      aria-label="Pause slideshow"
+      aria-pressed="false"
+      class="hs-pause absolute z-20 flex h-[44px] w-[44px] items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-[8px] transition-colors duration-300 hover:border-white hover:bg-white hover:text-brand md:h-[48px] md:w-[48px]"
+    >
+      <svg class="icon-pause h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <rect x="6" y="5" width="4" height="14" rx="1" />
+        <rect x="14" y="5" width="4" height="14" rx="1" />
+      </svg>
+      <svg class="icon-play h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" />
+      </svg>
+    </button>
+  )}
+</section>
+
+<style>
+  .hs-content {
+    padding-inline: 24px;
+    padding-bottom: var(--pb-mobile);
+  }
+
+  .hs-pause {
+    right: 20px;
+    bottom: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .hs-content {
+      padding-inline: 96px;
+      padding-bottom: var(--pb-desktop);
+    }
+
+    .hs-pause {
+      right: 48px;
+      bottom: 32px;
+    }
+  }
+
+  /* --- Fotos: a nova entra por cima (fade-in) e a anterior some só depois, sem "piscar" --- */
+  .hs-slide {
+    opacity: 0;
+    transition: opacity 0s linear 1s;
+  }
+
+  .hs-slide.is-active {
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 1s ease;
+  }
+
+  .hs-img {
+    object-position: var(--pos-m);
+  }
+
+  @media (min-width: 768px) {
+    .hs-img {
+      object-position: var(--pos-d);
+    }
+  }
+
+  /* --- Ícones do botão --- */
+  .icon-play {
+    display: none;
+  }
+
+  [data-paused] .icon-pause {
+    display: none;
+  }
+
+  [data-paused] .icon-play {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-hero-slider]").forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
+    const botao = root.querySelector<HTMLButtonElement>("[data-toggle]");
+    const intervalo = Number(root.dataset.intervalo ?? 5000);
+    const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let atual = 0;
+    let tocando = !reduzMovimento && slides.length > 1;
+    let timer: number | undefined;
+
+    const mostrar = (i: number) => {
+      slides.forEach((s, idx) => {
+        s.classList.toggle("is-active", idx === i);
+        s.setAttribute("aria-hidden", String(idx !== i));
+      });
+      atual = i;
+    };
+
+    const parar = () => {
+      if (timer !== undefined) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    const iniciar = () => {
+      parar();
+      if (slides.length < 2) return;
+      timer = window.setInterval(() => {
+        if (!document.hidden) mostrar((atual + 1) % slides.length);
+      }, intervalo);
+    };
+
+    const atualizarBotao = () => {
+      root.toggleAttribute("data-paused", !tocando);
+      botao?.setAttribute("aria-label", tocando ? "Pause slideshow" : "Play slideshow");
+      botao?.setAttribute("aria-pressed", String(!tocando));
+    };
+
+    botao?.addEventListener("click", () => {
+      tocando = !tocando;
+      if (tocando) iniciar();
+      else parar();
+      atualizarBotao();
+    });
+
+    atualizarBotao();
+    if (tocando) iniciar();
+  });
+</script>

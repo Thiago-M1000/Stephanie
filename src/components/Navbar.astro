@@ -1,0 +1,164 @@
+---
+import { SITE } from "../config/site";
+
+interface Props {
+  /** Nome exibido no logo (padrão: SITE.name). */
+  nome?: string;
+  nomeHref?: string;
+  links?: { nome: string; href: string }[];
+  ctaTexto?: string;
+  ctaHref?: string;
+}
+
+const { nome = SITE.name, nomeHref = "/", links = [], ctaTexto, ctaHref } = Astro.props;
+const temCta = Boolean(ctaTexto && ctaHref);
+---
+
+<nav
+  id="navbar"
+  class="fixed inset-x-0 top-0 z-20 border-b border-brand/10 bg-white/80 text-brand backdrop-blur-[16px]"
+>
+  <div class="mx-auto max-w-[1200px] px-5 md:px-10">
+
+    <!-- Barra principal -->
+    <div class="flex h-[64px] items-center justify-between font-big text-[20px] font-semibold md:grid md:h-[80px] md:grid-cols-3">
+
+      <!-- Logo / nome -->
+      <div>
+        <a href={nomeHref}>
+          <span class="font-big text-[20px] md:text-[24px] font-[700] uppercase tracking-tight leading-none whitespace-nowrap">
+            {nome}
+          </span>
+        </a>
+      </div>
+
+      <!-- Links desktop -->
+      <div class="hidden md:flex items-center justify-center gap-8">
+        {links.map((link) => (
+          <a href={link.href} class="transition-opacity duration-300 hover:opacity-60">{link.nome}</a>
+        ))}
+      </div>
+
+      <!-- CTA desktop (só aparece se ctaTexto e ctaHref forem passados) -->
+      <div class="hidden md:block justify-self-end">
+        {temCta && (
+          <a
+            href={ctaHref}
+            class="px-[24px] py-[8px] rounded-[999px] bg-brand text-[18px] font-bold text-white hover:bg-brand-dark transition-colors duration-300"
+          >
+            {ctaTexto}
+          </a>
+        )}
+      </div>
+
+      <!-- Botão do menu mobile -->
+      <button
+        id="menu-btn"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        class="md:hidden -mr-2 flex h-10 w-10 items-center justify-center"
+      >
+        <span class="relative block h-4 w-6">
+          <span class="barra absolute left-0 top-0 h-[2px] w-6 bg-brand transition-transform duration-300"></span>
+          <span class="barra absolute bottom-0 left-0 h-[2px] w-6 bg-brand transition-transform duration-300"></span>
+        </span>
+      </button>
+
+    </div>
+
+    <!-- Menu mobile -->
+    <div id="menu-mobile" class="md:hidden grid">
+      <div id="menu-conteudo" class="min-h-0 overflow-hidden" inert>
+        <div class="flex flex-col pb-5 font-big text-[24px] font-[700] uppercase">
+          {links.map((link) => (
+            <a href={link.href} class="menu-link border-t border-brand/10 py-3 transition-opacity duration-300 hover:opacity-60">{link.nome}</a>
+          ))}
+          {temCta && (
+            <a
+              href={ctaHref}
+              class="menu-link mt-4 rounded-full bg-brand px-6 py-3 text-center text-[20px] font-bold text-white"
+            >
+              {ctaTexto}
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Espaçador: ocupa o lugar da navbar (que é fixa) para o conteúdo não ficar por baixo dela.
+     Precisa ter a mesma altura da barra principal: 64px no mobile e 80px no desktop. -->
+<div class="h-[64px] md:h-[80px]" aria-hidden="true"></div>
+
+<!-- Barra de progresso de scroll (para remover: apague este bloco e a função "progresso" no script) -->
+<div class="fixed inset-x-0 top-0 z-30 h-[3px]">
+  <div
+    id="progresso"
+    class="h-full w-full origin-left bg-[#0A1828] will-change-transform"
+    style="transform:scaleX(0)"
+  ></div>
+</div>
+
+<style>
+  #navbar {
+    transition: background-color 0.3s;
+  }
+
+  /* Com o menu mobile aberto, o fundo fica quase opaco para facilitar a leitura */
+  #navbar.menu-aberto {
+    background-color: rgb(255 255 255 / 0.96);
+  }
+
+  #menu-mobile {
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+
+  #navbar.menu-aberto #menu-mobile {
+    grid-template-rows: 1fr;
+  }
+
+  #navbar.menu-aberto .barra:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  #navbar.menu-aberto .barra:nth-child(2) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const nav = document.getElementById("navbar");
+  const barra = document.getElementById("progresso");
+  const botao = document.getElementById("menu-btn");
+  const conteudo = document.getElementById("menu-conteudo");
+
+  const progresso = () => {
+    if (!barra) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    barra.style.transform = `scaleX(${p})`;
+  };
+
+  const menu = (abrir: boolean) => {
+    if (!nav || !botao || !conteudo) return;
+    nav.classList.toggle("menu-aberto", abrir);
+    botao.setAttribute("aria-expanded", String(abrir));
+    botao.setAttribute("aria-label", abrir ? "Close menu" : "Open menu");
+    conteudo.toggleAttribute("inert", !abrir);
+  };
+
+  botao?.addEventListener("click", () => menu(!nav?.classList.contains("menu-aberto")));
+  document.querySelectorAll(".menu-link").forEach((l) => l.addEventListener("click", () => menu(false)));
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) menu(false);
+  });
+
+  window.addEventListener("scroll", progresso, { passive: true });
+  window.addEventListener("resize", progresso);
+  progresso();
+</script>

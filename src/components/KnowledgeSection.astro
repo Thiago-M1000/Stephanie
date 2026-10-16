@@ -1,0 +1,104 @@
+---
+interface Item {
+  titulo: string;
+  texto: string;
+}
+
+interface Props {
+  id?: string;
+  /** Primeira parte do título (branco). */
+  titulo?: string;
+  /** Segunda parte do título, em amarelo. */
+  destaque?: string;
+  /** Foto da seção. */
+  imagem?: string;
+  alt?: string;
+  /** Enquadramento da foto, "X% Y%" (ex: "50% 30%"). */
+  imgPos?: string;
+  /** Texto de introdução, abaixo da foto. */
+  intro?: string;
+  itens?: Item[];
+  /** Classe de cor do trecho em destaque. Troque se o "accent" não for o amarelo desejado (ex: "text-[#FFD60A]"). */
+  corDestaque?: string;
+}
+
+const {
+  id = "knowledge",
+  titulo = "Build the knowledge",
+  destaque = "behind every treatment.",
+  imagem = "/images/img1.webp",
+  alt = "",
+  imgPos = "50% 50%",
+  intro = "A strong foundation starts with understanding what happens beneath the skin.",
+  itens = [
+    {
+      titulo: "Anatomy & Physiology",
+      texto: "Understand facial anatomy and how it influences safe, effective treatment planning.",
+    },
+    {
+      titulo: "Safety in Medicines",
+      texto: "Learn the essentials of safe medicine handling, preparation and responsible practice.",
+    },
+    {
+      titulo: "Complications Management",
+      texto: "Recognise potential complications and understand how to respond safely and confidently.",
+    },
+    {
+      titulo: "Emergency Dissolve",
+      texto: "Develop essential knowledge around dissolving dermal filler when clinically required.",
+    },
+    {
+      titulo: "First Aid",
+      texto: "Build the confidence to respond appropriately to emergencies in a clinical setting.",
+    },
+  ],
+  corDestaque = "text-accent",
+} = Astro.props;
+---
+
+<section id={id} class="bg-brand text-white">
+  <div class="mx-auto max-w-[1200px] px-[20px] py-[64px] md:px-[40px] md:py-[120px]">
+
+    <!-- Título -->
+    <h2 class="mx-auto text-center font-sans text-[30px] font-[600] leading-[1.1] md:max-w-[720px] md:text-[46px]">
+      {titulo}
+      <span class:list={["block", corDestaque]}>{destaque}</span>
+    </h2>
+
+    <div class="mt-[32px] grid gap-[32px] md:mt-[64px] md:grid-cols-[minmax(0,400px)_1fr] md:gap-[64px]">
+
+      <!-- Foto -->
+      <div class="md:self-start md:sticky md:top-[112px]">
+        <img
+          src={imagem}
+          alt={alt}
+          loading="lazy"
+          class="aspect-[4/5] w-full max-w-[300px] rounded-[24px] object-cover md:max-w-none md:rounded-[32px]"
+          style={`object-position:${imgPos}`}
+        />
+      </div>
+
+      <!-- Texto + tópicos -->
+      <div>
+        <p class="font-sans text-[20px] tracking-tight md:text-[26px] md:leading-[1.3] md:max-w-[480px]">
+          {intro}
+        </p>
+
+        <ul class="mt-[32px] md:mt-[48px]">
+          {itens.map((item, i) => (
+            <li class="flex gap-[16px] border-t border-white/20 py-[20px] md:gap-[24px] md:py-[28px]">
+              <span class="font-big text-[16px] font-[700] text-white/40 md:text-[18px]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 class="font-big text-[22px] font-[700] leading-[1.2] md:text-[28px]">{item.titulo}</h3>
+                <p class="mt-[6px] font-sans text-[16px] text-white/70 md:text-[18px]">{item.texto}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>

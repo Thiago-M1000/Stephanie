@@ -1,0 +1,169 @@
+---
+interface Link {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  /** Nome do negócio (topo da primeira coluna). */
+  nome?: string;
+  /** Texto curto abaixo do nome. Opcional. */
+  descricao?: string;
+  /** Endereço, uma linha por item. */
+  endereco?: string[];
+  /** Links de navegação. */
+  links?: Link[];
+  /** Link completo do Instagram (ex: "https://instagram.com/seuperfil"). */
+  instagram?: string;
+  /** Link completo do Facebook (ex: "https://facebook.com/suapagina"). */
+  facebook?: string;
+  /** Apenas o endereço de e-mail (ex: "contato@site.com"). Vira mailto: automaticamente. */
+  email?: string;
+  /** Texto de copyright (o ano é gerado automaticamente). */
+  copyright?: string;
+  /** Texto do crédito do site. */
+  credito?: string;
+  /** Link opcional do crédito (ex: site da WeBeautyDesign). */
+  creditoHref?: string;
+  id?: string;
+}
+
+const {
+  nome = "Beauty Beneath The Needle",
+  descricao = "The Pathway to Aesthetics: personalised 1-1 training in anatomy, safety and core aesthetics treatments.",
+  endereco = ["94 Main Road", "Gedling", "NG4 3HG"],
+  links = [
+    { label: "Pricing", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+  ],
+  // TODO: troque os "#" pelos links reais
+  instagram = "#",
+  facebook = "#",
+  email = "",
+  copyright = "Beauty Beneath The Needle. All rights reserved.",
+  credito = "Website built by",
+  creditoHref,
+  id = "footer",
+} = Astro.props;
+
+const ano = new Date().getFullYear();
+const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  [nome, ...endereco].join(", ")
+)}`;
+
+const redes = [
+  { label: "Instagram", href: instagram, externo: true },
+  { label: "Facebook", href: facebook, externo: true },
+  { label: "Email", href: email ? `mailto:${email}` : "#", externo: false },
+];
+---
+
+<footer id={id} class="bg-brand px-[16px] pb-[32px] pt-[64px] text-white md:px-[40px] md:pt-[88px]">
+  <div class="mx-auto max-w-[1200px]">
+
+    <div class="grid gap-[40px] md:grid-cols-3 md:gap-[48px]">
+
+      <!-- Marca + endereço -->
+      <div>
+        <p class="font-sans text-[24px] font-[600] leading-[1.2] tracking-[-0.02em] text-white md:text-[28px]">
+          {nome}
+        </p>
+
+        {descricao && (
+          <p class="mt-[12px] max-w-[360px] font-sans text-[16px] leading-[1.5] text-white/70 md:text-[17px]">
+            {descricao}
+          </p>
+        )}
+
+        <a
+          href={mapsHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-[20px] block font-sans text-[16px] not-italic leading-[1.5] text-white/90 transition-colors duration-300 hover:text-accent md:text-[17px]"
+        >
+          {endereco.map((linha) => (
+            <span class="block">{linha}</span>
+          ))}
+        </a>
+      </div>
+
+      <!-- Navegação -->
+      <nav aria-label="Footer">
+        <p class="font-sans text-[14px] font-[700] uppercase tracking-[0.08em] text-accent">Explore</p>
+        <ul class="mt-[16px] flex flex-col gap-[12px]">
+          {links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="font-sans text-[17px] text-white/90 transition-colors duration-300 hover:text-accent md:text-[18px]"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Redes sociais -->
+      <div>
+        <p class="font-sans text-[14px] font-[700] uppercase tracking-[0.08em] text-accent">Follow us</p>
+        <ul class="mt-[16px] flex items-center gap-[12px]">
+          {redes.map((rede) => (
+            <li>
+              <a
+                href={rede.href}
+                aria-label={rede.label}
+                target={rede.externo ? "_blank" : undefined}
+                rel={rede.externo ? "noopener noreferrer" : undefined}
+                class="flex h-[44px] w-[44px] items-center justify-center rounded-full border border-white/30 text-white transition-all duration-300 hover:border-accent hover:bg-accent hover:text-brand"
+              >
+                {rede.label === "Instagram" && (
+                  <svg viewBox="0 0 24 24" class="h-[20px] w-[20px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                )}
+                {rede.label === "Facebook" && (
+                  <svg viewBox="0 0 24 24" class="h-[20px] w-[20px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                )}
+                {rede.label === "Email" && (
+                  <svg viewBox="0 0 24 24" class="h-[20px] w-[20px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Linha final -->
+    <div class="mt-[48px] h-[1px] w-full bg-white/20 md:mt-[64px]"></div>
+
+    <div class="mt-[24px] flex flex-col items-center gap-[6px] text-center font-sans text-[14px] leading-[1.4] text-white/60 md:text-[15px]">
+      <p>© {ano} {copyright}</p>
+      <p>
+        {credito}{" "}
+        {creditoHref ? (
+          <a
+            href={creditoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-[600] text-white/90 transition-colors duration-300 hover:text-accent"
+          >
+            WeBeautyDesign
+          </a>
+        ) : (
+          <span class="font-[600] text-white/90">WeBeautyDesign</span>
+        )}
+      </p>
+    </div>
+
+  </div>
+</footer>

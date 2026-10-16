@@ -1,0 +1,105 @@
+---
+interface Item {
+  titulo: string;
+  texto: string;
+}
+
+interface Props {
+  /** Primeira linha do título (cor normal). */
+  titulo?: string;
+  /** Segunda linha do título (amarelo). Fica sempre em uma linha própria. */
+  destaque?: string;
+  /** Título menor, acima da lista, à esquerda do vídeo. */
+  subtitulo?: string;
+  /** Tópicos exibidos à esquerda do vídeo. */
+  itens?: Item[];
+  /** Vídeo próprio (arquivo em /public/videos/...). */
+  video?: string;
+  /** Capa do vídeo (aparece antes do play). */
+  poster?: string;
+  /** Alternativa ao "video": URL de embed do YouTube/Vimeo (ex: https://www.youtube-nocookie.com/embed/ID). */
+  embed?: string;
+  /** Proporção do vídeo, "largura / altura". Padrão vertical: "9 / 16". */
+  videoProporcao?: string;
+  id?: string;
+}
+
+const {
+  titulo = "Learn by doing,",
+  destaque = "not just watching.",
+  subtitulo = "Go beyond theory and build real confidence.",
+  itens = [
+    {
+      titulo: "1-1 Training",
+      texto: "Personalised training with direct guidance throughout your learning experience.",
+    },
+    {
+      titulo: "Extensive Model Practice",
+      texto: "Gain practical experience working on real models and develop confidence with your techniques.",
+    },
+    {
+      titulo: "Safety First",
+      texto: "Learn how to assess clients, understand complications and prioritise patient safety at every stage.",
+    },
+  ],
+  video,
+  poster,
+  embed,
+  videoProporcao = "9 / 16",
+  id = "learn",
+} = Astro.props;
+---
+
+<section id={id} class="scroll-mt-4 bg-surface px-[20px] py-[64px] text-ink md:px-[96px] md:py-[82px]">
+  <div class="reveal mx-auto max-w-[1000px]">
+
+    <!-- Título: sempre 2 linhas (a segunda em amarelo) -->
+    <h2 class="text-center font-sans text-[30px] font-[600] leading-[1.15] tracking-[-0.03em] text-brand md:text-[46px]">
+      {titulo}
+      <span class="block text-accent">{destaque}</span>
+    </h2>
+
+    <div class="mt-[32px] grid items-center gap-[32px] md:mt-[56px] md:grid-cols-[1fr_300px] md:gap-[64px]">
+
+      <!-- Vídeo (direita no desktop, em cima no mobile) -->
+      <div
+        class="mx-auto w-full max-w-[300px] overflow-hidden rounded-[24px] bg-black md:order-2 md:max-w-none"
+        style={`aspect-ratio:${videoProporcao}`}
+      >
+        {embed ? (
+          <iframe
+            src={embed}
+            title={`${titulo} ${destaque}`}
+            class="h-full w-full"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen
+          ></iframe>
+        ) : (
+          video && (
+            <video class="h-full w-full object-cover" controls playsinline preload="metadata" poster={poster}>
+              <source src={video} />
+            </video>
+          )
+        )}
+      </div>
+
+      <!-- Texto (esquerda no desktop) -->
+      <div class="md:order-1">
+        <h3 class="font-sans text-[26px] font-[600] leading-[1.2] tracking-[-0.02em] text-brand md:text-[32px]">{subtitulo}</h3>
+
+        {itens.length > 0 && (
+          <ul class="mt-[28px] flex flex-col gap-[24px] md:mt-[36px] md:gap-[28px]">
+            {itens.map((item) => (
+              <li>
+                <h4 class="font-sans text-[20px] font-[600] leading-[1.2] text-brand md:text-[22px]">{item.titulo}</h4>
+                <p class="mt-[6px] font-sans text-[17px] leading-[1.6] text-ink/80 md:text-[20px]">{item.texto}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+    </div>
+  </div>
+</section>

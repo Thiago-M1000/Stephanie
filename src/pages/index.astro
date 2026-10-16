@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import LinkCards from "../components/LinkCards.astro";
+import About from "../components/About.astro";
+import { SITE } from "../config/site";
+
+const sobre = [
+  "I’m a Registered Nurse, aesthetics practitioner, trainer, proud mum and complete coffee addict.",
+  "I’m 26 years old and have built my career around aesthetics, patient safety and helping people feel confident in themselves.",
+  "My nursing background has always shaped the way I work. I’m a perfectionist, I genuinely care about my clients, and I’m always learning, training and investing in my education.",
+  "Outside of aesthetics, I’m a mum to my 5-year-old son, a proud dog mum to two miniature dachshunds, and I’m happiest when I’m travelling or planning my next holiday.",
+  "I never expected aesthetics to change my life the way it has, but turning something I love into a career has been one of the best decisions I’ve ever made.",
+  "And yes — you’ll probably find me with a coffee in hand.",
+];
+---
+
+<BaseLayout
+  title="Helen Hinchliff - Links"
+  description="Book a treatment or start your training today."
+>
+  <Hero
+    titulo="Helen Hinchliff"
+    subtitulo="Book a treatment or start your training today."
+    imagem="/images/img6.webp"
+    imagemMobile="/images/img6.webp"
+    alt="Helen Hinchliff"
+    imgMobileX={50}
+    imgMobileY={15}
+    imgDesktopX={50}
+    imgDesktopY={10}
+    centralizado
+    instagram={SITE.social.instagram}
+    facebook={SITE.social.facebook}
+    email={SITE.social.email}
+    tituloTamanho="text-[58px] md:text-[74px]"
+    subtituloTamanho="text-[22px] md:text-[30px]"
+    seta="#links"
+    transicao="#000000"
+    semNavbar
+  />
+
+  <LinkCards />
+
+  <About
+    titulo="Who is Hellen?"
+    paragrafos={sobre}
+    imagem="/images/img6.webp"
+    alt="Helen Hinchliff"
+    imagemPos="50% 20%"
+  />
+</BaseLayout>

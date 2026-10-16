@@ -1,0 +1,202 @@
+---
+interface Props {
+  titulo: string;
+  subtitulo?: string;
+  imagem: string;
+  imagemMobile?: string;
+  alt?: string;
+
+  /** Use em páginas sem navbar: a hero passa a ocupar a tela inteira (100svh). */
+  semNavbar?: boolean;
+
+  /** Posição da imagem no celular. X: 0 = esquerda, 100 = direita. Y: 0 = topo, 100 = base. */
+  imgMobileX?: number;
+  imgMobileY?: number;
+
+  /** Posição da imagem no desktop. X: 0 = esquerda, 100 = direita. Y: 0 = topo, 100 = base. */
+  imgDesktopX?: number;
+  imgDesktopY?: number;
+
+  /** Onde o texto fica na altura da tela: "topo", "centro" ou "base". */
+  textoVertical?: "topo" | "centro" | "base";
+
+  /** Espaço (em px) entre o texto e a borda de baixo da tela. */
+  paddingBottomMobile?: number;
+  paddingBottomDesktop?: number;
+
+  /** Lista de destaques exibida em chips abaixo do subtítulo (opcional). */
+  destaques?: string[];
+
+  botao?: string;
+  botaoHref?: string;
+  centralizado?: boolean;
+  instagram?: string;
+  facebook?: string;
+  email?: string;
+  transicao?: string;
+  seta?: string | false;
+  tituloTamanho?: string;
+  subtituloTamanho?: string;
+}
+
+const {
+  titulo,
+  subtitulo,
+  imagem,
+  imagemMobile,
+  alt = "",
+  semNavbar = false,
+  imgMobileX = 50,
+  imgMobileY = 50,
+  imgDesktopX = 50,
+  imgDesktopY = 35,
+  textoVertical = "base",
+  paddingBottomMobile = 24,
+  paddingBottomDesktop = 24,
+  destaques = [],
+  botao,
+  botaoHref = "#",
+  centralizado = false,
+  instagram,
+  facebook,
+  email,
+  transicao,
+  seta = false,
+  tituloTamanho = "text-[42px] md:text-[62px]",
+  subtituloTamanho = "text-[18px] md:text-[22px]",
+} = Astro.props;
+
+const alinhamentoVertical = {
+  topo: "items-start",
+  centro: "items-center",
+  base: "items-end",
+};
+
+const iconeClasse =
+  "flex h-[56px] w-[56px] items-center justify-center rounded-full border border-white/40 transition-colors duration-300 hover:bg-white hover:border-white hover:text-brand";
+---
+
+<section
+  id="home"
+  class:list={[
+    "relative flex overflow-hidden bg-black pb-[var(--pb-mobile)] md:pb-[var(--pb-desktop)]",
+    // Com navbar: desconta a altura dela. Sem navbar: tela inteira.
+    semNavbar
+      ? "min-h-[100svh]"
+      : "min-h-[calc(100svh-64px)] md:min-h-[calc(100svh-80px)]",
+    alinhamentoVertical[textoVertical],
+  ]}
+  style={`--pos-mobile:${imgMobileX}% ${imgMobileY}%;--pos-desktop:${imgDesktopX}% ${imgDesktopY}%;--pb-mobile:${paddingBottomMobile}px;--pb-desktop:${paddingBottomDesktop}px`}
+>
+
+  <!-- Imagem de fundo (posição controlada por imgMobileX/Y e imgDesktopX/Y) -->
+  <picture>
+    {imagemMobile && <source media="(max-width: 767px)" srcset={imagemMobile} />}
+    <img src={imagem} alt={alt} class="hero-img absolute inset-0 w-full h-full object-cover" />
+  </picture>
+
+  <!-- Escurecimento -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- Degradê de transição para a próxima seção (cor em hex, ex: "#0A0A0A") -->
+  {transicao && (
+    <div
+      class="absolute inset-x-0 bottom-0 h-2/3"
+      style={`background:linear-gradient(to top, ${transicao} 0%, ${transicao}99 35%, transparent 100%)`}
+    ></div>
+  )}
+
+  <!-- Conteúdo -->
+  <div class:list={["relative z-10 w-full text-white px-[24px] md:px-[96px]", centralizado ? "text-center" : "text-left"]}>
+
+    <h1
+      class:list={["font-big font-[700] leading-[1.1] animate-fade-up", tituloTamanho]}
+      set:html={titulo}
+    ></h1>
+
+    {subtitulo && (
+      <p
+        class:list={[
+          "font-sans tracking-tight mt-[8px] text-white font-[400] max-w-[768px] animate-fade-up [animation-delay:400ms]",
+          subtituloTamanho,
+          centralizado && "mx-auto",
+        ]}
+        set:html={subtitulo}
+      ></p>
+    )}
+
+    <!-- Destaques (chips) -->
+    {destaques.length > 0 && (
+      <ul class:list={["mt-[20px] flex flex-wrap gap-[8px] md:gap-[12px] animate-fade-up [animation-delay:600ms]", centralizado && "justify-center"]}>
+        {destaques.map((item) => (
+          <li class="rounded-full border border-white/30 bg-white/10 px-[14px] py-[6px] font-sans text-[14px] backdrop-blur-[10px] md:px-[18px] md:py-[8px] md:text-[16px]">{item}</li>
+        ))}
+      </ul>
+    )}
+
+    {botao && (
+      <a
+        href={botaoHref}
+        class="group inline-flex items-center gap-[8px] mt-[24px] px-[24px] md:px-[30px] py-[12px] rounded-[999px] bg-[#EBEBEB] text-[#1F1F1F] hover:bg-white hover:text-brand transition-colors duration-300 animate-fade-up [animation-delay:800ms] font-big text-[20px] font-bold"
+      >
+        {botao}
+        <svg viewBox="0 0 24 24" class="h-[20px] w-[20px] transition-transform duration-300 group-hover:translate-x-[2px]" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    )}
+
+    <!-- Redes sociais -->
+    {(instagram || facebook || email) && (
+      <div class:list={["mt-[24px] flex gap-[20px] animate-fade-up [animation-delay:1000ms]", centralizado && "justify-center"]}>
+        {instagram && (
+          <a href={instagram} target="_blank" rel="noopener" aria-label="Instagram" class={iconeClasse}>
+            <svg viewBox="0 0 24 24" class="h-[24px] w-[24px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
+            </svg>
+          </a>
+        )}
+        {facebook && (
+          <a href={facebook} target="_blank" rel="noopener" aria-label="Facebook" class={iconeClasse}>
+            <svg viewBox="0 0 24 24" class="h-[24px] w-[24px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+        )}
+        {email && (
+          <a href={`mailto:${email}`} aria-label="Email" class={iconeClasse}>
+            <svg viewBox="0 0 24 24" class="h-[24px] w-[24px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+          </a>
+        )}
+      </div>
+    )}
+
+    <!-- Seta de scroll -->
+    {seta && (
+      <div class="mt-[32px] animate-fade-up [animation-delay:1200ms]">
+        <a href={seta} aria-label="Scroll down" class="inline-flex animate-bounce text-white transition-colors duration-300">
+          <svg viewBox="0 0 24 24" class="h-[40px] w-[40px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero-img {
+    object-position: var(--pos-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .hero-img {
+      object-position: var(--pos-desktop);
+    }
+  }
+</style>

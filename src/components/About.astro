@@ -1,0 +1,38 @@
+---
+interface Props {
+  titulo: string;
+  paragrafos: string[];
+  imagem: string;
+  alt?: string;
+  /** Enquadramento da foto, "X% Y%" (opcional). */
+  imagemPos?: string;
+  id?: string;
+}
+
+const { titulo, paragrafos, imagem, alt = "", imagemPos, id = "about" } = Astro.props;
+---
+
+<section id={id} class="scroll-mt-4 bg-brand px-[24px] py-[80px] text-white md:px-[96px] md:py-[112px]">
+  <div class="reveal mx-auto grid max-w-[1000px] items-center gap-[32px] md:grid-cols-[360px_1fr] md:gap-[64px]">
+
+    <!-- Foto (esquerda) -->
+    <div class="mx-auto w-full max-w-[280px] overflow-hidden rounded-[24px] md:max-w-none">
+      <img
+        src={imagem}
+        alt={alt}
+        loading="lazy"
+        class="aspect-[4/5] w-full object-cover"
+        style={imagemPos ? `object-position:${imagemPos}` : undefined}
+      />
+    </div>
+
+    <!-- Texto (direita) -->
+    <div>
+      <h2 class="font-sans text-[32px] font-[600] leading-[1.1] md:text-[40px]">{titulo}</h2>
+      <div class="mt-[24px] flex max-w-[560px] flex-col gap-[16px] font-sans text-[16px] leading-[1.5] text-white/90 md:text-[18px]">
+        {paragrafos.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+  </div>
+</section>

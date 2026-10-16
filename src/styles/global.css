@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   TOKENS DO PROJETO
+   Trocar só este bloco a cada cliente (cores e fontes).
+   Uso: bg-brand, text-brand-dark, bg-surface, text-ink, font-sans, font-big
+   ========================================================================== */
+@theme {
+  /* Fontes */
+  --font-sans: "Onest", sans-serif;
+  --font-big: "Big Shoulders Display", sans-serif;
+
+  /* Cores da marca (placeholders, ajustar por cliente) */
+  --color-brand: #0A1828;
+  --color-brand-dark: #000000;
+  --color-brand-light: #000000;
+
+  /* Cor de destaque (palavras em destaque nos títulos etc.) */
+  --color-accent: #EAB310;
+
+  /* Cores neutras */
+  --color-surface: #ffffff;
+  --color-ink: #111111;
+
+  /* Animações */
+  --animate-fade-up: fade-up 0.8s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand);
+    color: var(--color-surface);
+  }
+}
+
+/* ==========================================================================
+   REVEAL (animação de entrada ao rolar a página)
+   Uso: adicionar a classe "reveal" no elemento; o script adiciona "is-visible"
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE: reduz movimento
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  [class*="animate-"] {
+    animation: none !important;
+  }
+}

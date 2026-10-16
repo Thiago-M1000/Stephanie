@@ -1,0 +1,197 @@
+---
+interface Card {
+  titulo: string;
+  itens: string[];
+  /** Linha opcional acima do preço (ex: "Get access for a special price:"). */
+  chamada?: string;
+  /** Preço antigo, riscado (ex: "£1,999"). */
+  precoDe: string;
+  /** Preço atual (ex: "£1,499"). */
+  precoPor: string;
+  /** Selo de economia ao lado do preço (ex: "Save £500"). Opcional. */
+  economia?: string;
+  /** Selo no topo do card (ex: "Best value"). Opcional. */
+  selo?: string;
+  /** Card escuro, em destaque. */
+  destacado?: boolean;
+  botao?: string;
+  botaoHref?: string;
+}
+
+interface Props {
+  /** Primeira parte do título (cor normal). */
+  titulo?: string;
+  /** Continuação do título. No mobile vai para a segunda linha; no desktop fica junto da primeira. */
+  tituloLinha2?: string;
+  /** Última parte do título (amarelo). Fica sempre em uma linha própria. */
+  destaque?: string;
+  cards?: Card[];
+  id?: string;
+}
+
+const {
+  titulo = "Everything you need",
+  tituloLinha2 = "to build your",
+  destaque = "foundation in aesthetics.",
+  cards = [
+    {
+      titulo: "Foundation Training",
+      itens: [
+        "Level 3 Anatomy + Physiology",
+        "Safety in Medicines",
+        "First Aid",
+        "Complications Management",
+        "Emergency Dissolve",
+        "Foundation Dermal Fillers",
+        "Foundation Anti-Wrinkle",
+      ],
+      precoDe: "£1,999",
+      precoPor: "£1,499",
+      economia: "Save £500",
+      botao: "Start Your Training",
+      botaoHref: "#",
+    },
+    {
+      titulo: "Advanced Dermal Filler & Anti-Wrinkle Injections",
+      itens: [
+        "Level 3 Anatomy + Physiology",
+        "Safety in Medicines",
+        "First Aid",
+        "Complications Management",
+        "Emergency Dissolve",
+        "Advanced Dermal Filler",
+        "Advanced Anti-Wrinkle Injections",
+        "Foundation Dermal Filler",
+        "Foundation Anti-Wrinkle",
+      ],
+      chamada: "Get access for a special price:",
+      precoDe: "£3,000",
+      precoPor: "£2,199",
+      economia: "Save £801",
+      selo: "Best value",
+      destacado: true,
+      botao: "Start Your Training",
+      botaoHref: "#",
+    },
+  ],
+  id = "pricing",
+} = Astro.props;
+---
+
+<section id={id} class="scroll-mt-4 bg-surface px-[20px] py-[64px] text-ink md:px-[96px] md:py-[82px]">
+  <div class="reveal mx-auto max-w-[1000px]">
+
+    <!-- Título: mobile = 3 linhas, desktop = 2 linhas (a última sempre em amarelo) -->
+    <h2 class="text-center font-sans text-[30px] font-[600] leading-[1.15] tracking-[-0.03em] text-brand md:text-[46px]">
+      {titulo}{" "}<br class="md:hidden" />{tituloLinha2}
+      <span class="block text-accent">{destaque}</span>
+    </h2>
+
+    <div class="mt-[32px] grid items-stretch gap-[24px] md:mt-[56px] md:grid-cols-2 md:gap-[32px]">
+      {cards.map((card) => (
+        <article
+          class:list={[
+            "relative flex flex-col rounded-[24px] p-[24px] md:p-[40px]",
+            card.destacado
+              ? "bg-brand text-white shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)]"
+              : "border border-brand/15 bg-white text-ink",
+          ]}
+        >
+
+          <!-- Selo no topo (opcional) -->
+          {card.selo && (
+            <span class="absolute right-[24px] top-[-14px] rounded-full bg-accent px-[16px] py-[6px] font-sans text-[14px] font-[700] uppercase tracking-[0.04em] text-brand md:right-[40px]">
+              {card.selo}
+            </span>
+          )}
+
+          <h3
+            class:list={[
+              "font-sans text-[24px] font-[600] leading-[1.2] tracking-[-0.02em] md:min-h-[68px] md:text-[28px]",
+              card.destacado ? "text-white" : "text-brand",
+            ]}
+          >
+            {card.titulo}
+          </h3>
+
+          <div class:list={["mt-[24px] h-[1px] w-full", card.destacado ? "bg-white/20" : "bg-brand/10"]}></div>
+
+          <ul class="mt-[24px] flex flex-col gap-[14px]">
+            {card.itens.map((item) => (
+              <li
+                class:list={[
+                  "flex items-start gap-[12px] font-sans text-[17px] leading-[1.4] md:text-[18px]",
+                  card.destacado ? "text-white/90" : "text-ink/80",
+                ]}
+              >
+                <span
+                  class:list={[
+                    "mt-[1px] flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full",
+                    card.destacado ? "bg-accent text-brand" : "bg-brand text-white",
+                  ]}
+                >
+                  <svg viewBox="0 0 24 24" class="h-[13px] w-[13px]" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12.5l4.5 4.5L19 7.5" />
+                  </svg>
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <!-- Preço + botão (ficam sempre no fim do card, alinhados entre os dois) -->
+          <div class="mt-auto pt-[32px]">
+            <div class:list={["h-[1px] w-full", card.destacado ? "bg-white/20" : "bg-brand/10"]}></div>
+
+            {card.chamada && (
+              <p class:list={["mt-[24px] font-sans text-[16px] leading-[1.4] md:text-[18px]", card.destacado ? "text-white/70" : "text-ink/70"]}>
+                {card.chamada}
+              </p>
+            )}
+
+            <p class:list={["font-sans text-[16px] md:text-[18px]", card.chamada ? "mt-[4px]" : "mt-[24px]", card.destacado ? "text-white/70" : "text-ink/70"]}>
+              From <span class="line-through">{card.precoDe}</span> to just:
+            </p>
+
+            <div class="mt-[4px] flex flex-wrap items-center gap-[12px]">
+              <p
+                class:list={[
+                  "font-sans text-[48px] font-[600] leading-[1] tracking-[-0.03em] md:text-[56px]",
+                  card.destacado ? "text-white" : "text-brand",
+                ]}
+              >
+                {card.precoPor}
+              </p>
+              {card.economia && (
+                <span
+                  class:list={[
+                    "rounded-full px-[12px] py-[4px] font-sans text-[14px] font-[700] md:text-[16px]",
+                    card.destacado ? "bg-accent text-brand" : "bg-brand/10 text-brand",
+                  ]}
+                >
+                  {card.economia}
+                </span>
+              )}
+            </div>
+
+            {card.botao && (
+              <a
+                href={card.botaoHref ?? "#"}
+                class:list={[
+                  "mt-[24px] inline-flex w-full items-center justify-center rounded-[999px] px-[24px] py-[14px] font-sans text-[18px] font-[600] transition-all duration-300",
+                  card.destacado
+                    ? "bg-accent text-brand hover:opacity-90"
+                    : "bg-brand text-white hover:bg-brand-dark",
+                ]}
+              >
+                {card.botao}
+              </a>
+            )}
+          </div>
+
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
