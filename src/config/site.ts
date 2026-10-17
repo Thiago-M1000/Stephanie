@@ -8,7 +8,7 @@ export const SITE = {
   tagline: "Beauty • Education • Business",
 
   // TODO: trocar pelo domínio real quando estiver definido
-  url: "https://example.com",
+  url: "https://stephanie.webeauty.workers.dev/",
   defaultOgImage: "/og-default.jpg",
 
   /** Localização / área de atendimento exibida no rodapé. Vazio = não mostra. */
