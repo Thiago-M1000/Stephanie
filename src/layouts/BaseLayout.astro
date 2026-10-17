@@ -1,12 +1,18 @@
 ---
 import "../styles/global.css";
 import { SITE } from "../config/site";
+import Navbar from "../components/Navbar.astro";
+import Footer2 from "../components/Footer2.astro";
 
 interface Props {
   title: string;
   description: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Mostra a navbar padrão (padrão: true). */
+  navbar?: boolean;
+  /** Mostra o rodapé padrão (padrão: true). */
+  footer?: boolean;
 }
 
 const {
@@ -14,6 +20,8 @@ const {
   description,
   ogImage = SITE.defaultOgImage,
   noindex = false,
+  navbar = true,
+  footer = true,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
@@ -43,12 +51,25 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700&family=Onest:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <slot />
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand focus:px-5 focus:py-2 focus:text-surface"
+    >
+      Skip to content
+    </a>
+
+    {navbar && <Navbar />}
+
+    <main id="conteudo">
+      <slot />
+    </main>
+
+    {footer && <Footer2 />}
 
     <script>
       import Lenis from "lenis";

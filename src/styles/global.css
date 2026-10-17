@@ -3,24 +3,30 @@
 /* ==========================================================================
    TOKENS DO PROJETO
    Trocar só este bloco a cada cliente (cores e fontes).
-   Uso: bg-brand, text-brand-dark, bg-surface, text-ink, font-sans, font-big
+   Uso: bg-brand, text-brand-dark, bg-surface, text-ink, bg-sand, bg-taupe,
+        text-muted, text-accent, font-sans, font-display
    ========================================================================== */
 @theme {
   /* Fontes */
-  --font-sans: "Onest", sans-serif;
-  --font-big: "Big Shoulders Display", sans-serif;
+  --font-sans: "Hanken Grotesk", sans-serif;
+  --font-display: "Newsreader", Georgia, serif;
+  /* Alias mantido para componentes antigos que ainda usam font-big */
+  --font-big: "Newsreader", Georgia, serif;
 
-  /* Cores da marca (placeholders, ajustar por cliente) */
-  --color-brand: #0A1828;
-  --color-brand-dark: #000000;
-  --color-brand-light: #000000;
+  /* Azul-marinho da marca (botões, rodapé, acentos escuros) */
+  --color-brand: #1d2a40;
+  --color-brand-dark: #131c2d;
+  --color-brand-light: #3b4d6b;
 
-  /* Cor de destaque (palavras em destaque nos títulos etc.) */
-  --color-accent: #EAB310;
+  /* Taupe claro: destaque sobre fundos escuros (hover, títulos do rodapé) */
+  --color-accent: #cdbb9f;
 
-  /* Cores neutras */
-  --color-surface: #ffffff;
-  --color-ink: #111111;
+  /* Neutros da paleta (creme, areia, taupe, cinza escuro) */
+  --color-surface: #f6f1e9;
+  --color-sand: #e8decf;
+  --color-taupe: #b3a38b;
+  --color-ink: #36342f;
+  --color-muted: #6b655b;
 
   /* Animações */
   --animate-fade-up: fade-up 0.8s ease-out both;
@@ -55,6 +61,13 @@
   ::selection {
     background-color: var(--color-brand);
     color: var(--color-surface);
+  }
+
+  /* Foco visível por teclado (usa a cor do texto, funciona em fundo claro e escuro) */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 }
 

@@ -1,0 +1,122 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const opcoes = [
+  "Beginner Lash Lift + Brow Lamination Training",
+  "Advanced Lash Lifting",
+  "Small Group Training",
+  "1:1 Training",
+  "Virtual Education",
+];
+
+const conteudo = [
+  "Lash and brow anatomy",
+  "Product chemistry and science",
+  "Lash and brow health",
+  "Shield and rod selection",
+  "Eye shape and facial assessment",
+  "Traditional techniques",
+  "Glueless techniques",
+  "Korean techniques",
+  "Processing and solution placement",
+  "Troubleshooting",
+  "Client consultation",
+  "Photography and content creation",
+  "Creating a strong client experience",
+];
+
+const esperar = [
+  "Hands-on education",
+  "Professional products and/or kit",
+  "Certification",
+  "Continued education",
+  "Ongoing support",
+  "Online course access where applicable",
+  "Photography and content guidance",
+  "Business and client experience guidance",
+];
+---
+
+<BaseLayout
+  title="Beauty Education | The Infinite Collective"
+  description="Lash lift and brow lamination education using the Eco Lift Premium System, with a focus on health, science, product knowledge and intentional technique."
+>
+  <!-- INTRODUÇÃO -->
+  <section class="px-5 pb-16 pt-8 md:px-10 md:pb-24 md:pt-16">
+    <div class="mx-auto max-w-[1280px]">
+      <h1 class="max-w-[16ch] font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[76px]">
+        Lash lift + brow lamination education
+      </h1>
+      <p class="mt-8 max-w-[56ch] text-[17px] leading-[1.7] text-ink/85 md:text-[19px]">
+        Education using the Eco Lift Premium System, with a strong focus on lash and brow health, science, product knowledge and intentional technique.
+      </p>
+    </div>
+  </section>
+
+  <!-- OPÇÕES DE TREINAMENTO -->
+  <section class="bg-sand px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px] lg:col-span-5">
+        Training options can include
+      </h2>
+      <ul class="border-t border-brand/20 lg:col-span-6 lg:col-start-7">
+        {opcoes.map((o) => (
+          <li class="border-b border-brand/20 py-4 font-display text-[22px] leading-[1.3] text-ink md:text-[26px]">{o}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- O QUE PODE SER COBERTO -->
+  <section class="px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px]">
+          Depending on the training, education can cover
+        </h2>
+        <p class="mt-6 max-w-[40ch] text-[17px] leading-[1.7] text-ink/85">
+          The goal isn't simply to teach you how to complete the treatment. I want you to understand why you're making each decision, so you can confidently assess the client in front of you rather than relying on the exact same process every time.
+        </p>
+      </div>
+      <ul class="grid gap-x-8 border-t border-brand/15 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+        {conteudo.map((c) => (
+          <li class="border-b border-brand/15 py-3 text-[17px] leading-[1.4] text-ink/90">{c}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- O QUE OS ALUNOS PODEM ESPERAR -->
+  <section class="bg-brand px-5 py-16 text-surface md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] md:text-[42px]">
+          What students can expect
+        </h2>
+        <p class="mt-6 max-w-[40ch] text-[17px] leading-[1.7] text-surface/80">
+          Depending on the training selected, this can include:
+        </p>
+      </div>
+      <ul class="grid gap-x-8 border-t border-surface/25 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+        {esperar.map((e) => (
+          <li class="border-b border-surface/25 py-3 text-[17px] leading-[1.4] text-surface/95">{e}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="px-5 py-20 md:px-10 md:py-28">
+    <div class="mx-auto flex max-w-[1280px] flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+      <p class="max-w-[22ch] font-display text-[32px] font-light leading-[1.1] tracking-[-0.015em] text-brand md:text-[48px]">
+        Interested in training?
+      </p>
+      <a
+        href="/contact"
+        class="inline-flex rounded-full bg-brand px-9 py-4 text-[17px] font-semibold text-surface transition-colors duration-300 hover:bg-brand-light"
+      >
+        Ask about training
+      </a>
+    </div>
+  </section>
+</BaseLayout>

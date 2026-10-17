@@ -10,46 +10,64 @@ interface Props {
   ctaHref?: string;
 }
 
-const { nome = SITE.name, nomeHref = "/", links = [], ctaTexto, ctaHref } = Astro.props;
+const {
+  nome = SITE.name,
+  nomeHref = "/",
+  links = SITE.nav,
+  ctaTexto = SITE.cta.texto,
+  ctaHref = SITE.cta.href,
+} = Astro.props;
+
 const temCta = Boolean(ctaTexto && ctaHref);
+
+// Página atual, para marcar o link ativo no menu
+const atual = Astro.url.pathname.replace(/\/$/, "") || "/";
+const estaAtivo = (href: string) =>
+  href === "/" ? atual === "/" : atual === href || atual.startsWith(`${href}/`);
 ---
 
 <nav
   id="navbar"
-  class="fixed inset-x-0 top-0 z-20 border-b border-brand/10 bg-white/80 text-brand backdrop-blur-[16px]"
+  class="fixed inset-x-0 top-0 z-20 border-b border-brand/10 bg-surface/85 text-brand backdrop-blur-[16px]"
 >
-  <div class="mx-auto max-w-[1200px] px-5 md:px-10">
+  <div class="mx-auto max-w-[1280px] px-5 md:px-10">
 
     <!-- Barra principal -->
-    <div class="flex h-[64px] items-center justify-between font-big text-[20px] font-semibold md:grid md:h-[80px] md:grid-cols-3">
+    <div class="flex h-[64px] items-center justify-between gap-6 xl:h-[80px]">
 
       <!-- Logo / nome -->
-      <div>
-        <a href={nomeHref}>
-          <span class="font-big text-[20px] md:text-[24px] font-[700] uppercase tracking-tight leading-none whitespace-nowrap">
-            {nome}
-          </span>
+      <a href={nomeHref} class="font-display text-[22px] font-medium leading-none tracking-[-0.01em] whitespace-nowrap xl:text-[25px]">
+        {nome}
+      </a>
+
+      <!-- Links desktop (a partir de 1280px; abaixo disso entra o menu hambúrguer) -->
+      <div class="hidden items-center gap-7 text-[15px] font-medium xl:flex">
+        {links.map((link) => {
+          const ativo = estaAtivo(link.href);
+          return (
+            <a
+              href={link.href}
+              aria-current={ativo ? "page" : undefined}
+              class:list={[
+                "whitespace-nowrap transition-opacity duration-300 hover:opacity-60",
+                ativo && "underline decoration-[1.5px] underline-offset-[10px]",
+              ]}
+            >
+              {link.nome}
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- CTA desktop: botão escuro com texto claro -->
+      {temCta && (
+        <a
+          href={ctaHref}
+          class="hidden whitespace-nowrap rounded-full bg-brand px-6 py-[10px] text-[15px] font-semibold text-surface transition-colors duration-300 hover:bg-brand-light xl:inline-flex"
+        >
+          {ctaTexto}
         </a>
-      </div>
-
-      <!-- Links desktop -->
-      <div class="hidden md:flex items-center justify-center gap-8">
-        {links.map((link) => (
-          <a href={link.href} class="transition-opacity duration-300 hover:opacity-60">{link.nome}</a>
-        ))}
-      </div>
-
-      <!-- CTA desktop (só aparece se ctaTexto e ctaHref forem passados) -->
-      <div class="hidden md:block justify-self-end">
-        {temCta && (
-          <a
-            href={ctaHref}
-            class="px-[24px] py-[8px] rounded-[999px] bg-brand text-[18px] font-bold text-white hover:bg-brand-dark transition-colors duration-300"
-          >
-            {ctaTexto}
-          </a>
-        )}
-      </div>
+      )}
 
       <!-- Botão do menu mobile -->
       <button
@@ -58,7 +76,7 @@ const temCta = Boolean(ctaTexto && ctaHref);
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="menu-mobile"
-        class="md:hidden -mr-2 flex h-10 w-10 items-center justify-center"
+        class="-mr-2 flex h-10 w-10 items-center justify-center xl:hidden"
       >
         <span class="relative block h-4 w-6">
           <span class="barra absolute left-0 top-0 h-[2px] w-6 bg-brand transition-transform duration-300"></span>
@@ -68,17 +86,29 @@ const temCta = Boolean(ctaTexto && ctaHref);
 
     </div>
 
-    <!-- Menu mobile -->
-    <div id="menu-mobile" class="md:hidden grid">
+    <!-- Menu mobile: links primeiro, botão em largura total no final -->
+    <div id="menu-mobile" class="grid xl:hidden">
       <div id="menu-conteudo" class="min-h-0 overflow-hidden" inert>
-        <div class="flex flex-col pb-5 font-big text-[24px] font-[700] uppercase">
-          {links.map((link) => (
-            <a href={link.href} class="menu-link border-t border-brand/10 py-3 transition-opacity duration-300 hover:opacity-60">{link.nome}</a>
-          ))}
+        <div class="flex flex-col pb-5 font-display text-[26px] font-medium">
+          {links.map((link) => {
+            const ativo = estaAtivo(link.href);
+            return (
+              <a
+                href={link.href}
+                aria-current={ativo ? "page" : undefined}
+                class:list={[
+                  "menu-link border-t border-brand/10 py-3 transition-opacity duration-300 hover:opacity-60",
+                  ativo && "underline decoration-[1.5px] underline-offset-[8px]",
+                ]}
+              >
+                {link.nome}
+              </a>
+            );
+          })}
           {temCta && (
             <a
               href={ctaHref}
-              class="menu-link mt-4 rounded-full bg-brand px-6 py-3 text-center text-[20px] font-bold text-white"
+              class="menu-link mt-4 w-full rounded-full bg-brand px-6 py-4 text-center font-sans text-[17px] font-semibold text-surface"
             >
               {ctaTexto}
             </a>
@@ -91,14 +121,14 @@ const temCta = Boolean(ctaTexto && ctaHref);
 </nav>
 
 <!-- Espaçador: ocupa o lugar da navbar (que é fixa) para o conteúdo não ficar por baixo dela.
-     Precisa ter a mesma altura da barra principal: 64px no mobile e 80px no desktop. -->
-<div class="h-[64px] md:h-[80px]" aria-hidden="true"></div>
+     Precisa ter a mesma altura da barra principal: 64px no mobile e 80px a partir de 1280px. -->
+<div class="h-[64px] xl:h-[80px]" aria-hidden="true"></div>
 
 <!-- Barra de progresso de scroll (para remover: apague este bloco e a função "progresso" no script) -->
 <div class="fixed inset-x-0 top-0 z-30 h-[3px]">
   <div
     id="progresso"
-    class="h-full w-full origin-left bg-[#0A1828] will-change-transform"
+    class="h-full w-full origin-left bg-brand will-change-transform"
     style="transform:scaleX(0)"
   ></div>
 </div>
@@ -110,7 +140,7 @@ const temCta = Boolean(ctaTexto && ctaHref);
 
   /* Com o menu mobile aberto, o fundo fica quase opaco para facilitar a leitura */
   #navbar.menu-aberto {
-    background-color: rgb(255 255 255 / 0.96);
+    background-color: rgb(246 241 233 / 0.97);
   }
 
   #menu-mobile {
@@ -155,7 +185,7 @@ const temCta = Boolean(ctaTexto && ctaHref);
   botao?.addEventListener("click", () => menu(!nav?.classList.contains("menu-aberto")));
   document.querySelectorAll(".menu-link").forEach((l) => l.addEventListener("click", () => menu(false)));
   window.addEventListener("resize", () => {
-    if (window.innerWidth >= 768) menu(false);
+    if (window.innerWidth >= 1280) menu(false);
   });
 
   window.addEventListener("scroll", progresso, { passive: true });

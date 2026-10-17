@@ -1,0 +1,33 @@
+---
+/* Lista de perguntas e respostas em sanfona.
+   Uso: <Faq itens={faq} />   onde faq = [{ pergunta: "...", resposta: "..." }]
+   Itens com resposta vazia mostram o texto de "aviso". */
+interface Item {
+  pergunta: string;
+  resposta: string;
+}
+
+interface Props {
+  itens: Item[];
+  aviso?: string;
+}
+
+const { itens, aviso = "The answer to this question will be added soon." } = Astro.props;
+---
+
+<div class="border-t border-brand/20">
+  {itens.map((f) => (
+    <details class="group border-b border-brand/20">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-display text-[22px] font-medium leading-[1.2] text-brand md:text-[26px] [&::-webkit-details-marker]:hidden">
+        {f.pergunta}
+        <span class="relative block h-4 w-4 shrink-0" aria-hidden="true">
+          <span class="absolute left-0 top-1/2 h-[2px] w-4 -translate-y-1/2 bg-brand"></span>
+          <span class="absolute left-1/2 top-0 h-4 w-[2px] -translate-x-1/2 bg-brand transition-transform duration-300 group-open:scale-y-0"></span>
+        </span>
+      </summary>
+      <p class:list={["max-w-[58ch] pb-7 text-[17px] leading-[1.7]", f.resposta ? "text-ink/85" : "text-muted"]}>
+        {f.resposta || aviso}
+      </p>
+    </details>
+  ))}
+</div>

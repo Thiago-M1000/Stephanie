@@ -1,0 +1,25 @@
+---
+/* Botão padrão do site.
+   Uso: <Botao href="/contact">Texto</Botao>
+        <Botao href="#faq" variante="secundario">Texto</Botao>
+   Variantes: primario (azul), secundario (contorno azul),
+              claro e claroSecundario (para usar sobre fotos escuras) */
+interface Props {
+  href: string;
+  variante?: "primario" | "secundario" | "claro" | "claroSecundario";
+}
+
+const { href, variante = "primario" } = Astro.props;
+
+const base =
+  "inline-flex rounded-full px-9 py-4 text-[17px] font-semibold transition-colors duration-300";
+
+const variantes = {
+  primario: "bg-brand text-surface hover:bg-brand-light",
+  secundario: "border border-brand text-brand hover:bg-brand hover:text-surface",
+  claro: "bg-surface text-brand hover:bg-sand",
+  claroSecundario: "border border-surface text-surface hover:bg-surface hover:text-brand",
+};
+---
+
+<a href={href} class:list={[base, variantes[variante]]}><slot /></a>

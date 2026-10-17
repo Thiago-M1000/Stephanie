@@ -1,0 +1,198 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroTest from "../components/HeroTest.astro";
+import Button from "../components/Button.astro";
+import FaqTest from "../components/FaqTest.astro";
+
+const passos = ["Learn", "Build", "Promote", "Connect", "Grow"];
+
+const naoPrecisa = [
+  "You don't need a massive following.",
+  "You don't need previous sales experience.",
+  "You don't need to already know how to build an online business.",
+];
+
+const procuro = [
+  "Ambitious",
+  "Coachable",
+  "Willing to learn",
+  "Willing to show up consistently",
+  "Open to doing something differently",
+  "Interested in building something long-term",
+];
+
+/* Preencha o campo "resposta" quando a Stephanie enviar as respostas.
+   Itens sem resposta mostram um aviso. */
+const faq: { pergunta: string; resposta: string }[] = [
+  { pergunta: "What exactly would I be doing?", resposta: "" },
+  { pergunta: "Do I need experience?", resposta: "" },
+  { pergunta: "Do I need a large social media following?", resposta: "" },
+  { pergunta: "How much time does it take?", resposta: "" },
+  { pergunta: "Can I build this alongside my current job or business?", resposta: "" },
+  { pergunta: "What is the investment?", resposta: "" },
+  { pergunta: "How does the income structure work?", resposta: "" },
+  { pergunta: "What support and mentorship do I receive?", resposta: "" },
+];
+
+/* TODO: link do contato preferido da Stephanie para os botões (ou use "/contact") */
+const conectarHref = "/contact";
+
+/* FOTO DE FUNDO DO HERO
+   Enquanto não houver uma foto própria desta página, ela usa a mesma da Home.
+   Para trocar: coloque o arquivo em /public/images e altere o caminho abaixo.
+   Para esconder a foto: troque para false (o fundo vira azul-marinho liso).
+   Ajuste o enquadramento em fotoPos, no formato "X% Y%". */
+const temFotoHero = true;
+const fotoHero = "/images/img3.webp";
+const fotoPos = "50% 25%";
+---
+
+<BaseLayout
+  title="Online Business | The Infinite Collective"
+  description="An online business built alongside existing businesses, as a way to create another stream of income without simply adding more appointments or working more hours."
+>
+  <HeroTest
+    titulo="Build income differently."
+    texto="This is the online business I chose to build alongside my existing businesses, as a way to create another stream of income without simply adding more appointments or working more hours."
+    foto={temFotoHero ? fotoHero : undefined}
+    fotoPos={fotoPos}
+  >
+    <Button href={conectarHref} variante="claro">Connect with Stephanie</Button>
+    <Button href="#faq" variante="claroSecundario">Read the FAQ</Button>
+  </HeroTest>
+
+  <!-- POR QUE COMECEI: declaração grande -->
+  <section class="bg-sand px-5 py-16 md:px-10 md:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <h2 class="text-[16px] font-semibold text-muted">Why I started</h2>
+      <p class="mt-6 max-w-[28ch] font-display text-[32px] font-light leading-[1.15] tracking-[-0.015em] text-brand md:text-[56px]">
+        I already had businesses that I loved and had worked incredibly hard to build. I wasn't looking to walk away from them.
+      </p>
+      <p class="mt-8 max-w-[56ch] text-[17px] leading-[1.7] text-ink/90 md:text-[19px]">
+        I wanted to create something alongside them that gave me the ability to build income differently and take some of the pressure off constantly trading my time for money.
+      </p>
+    </div>
+  </section>
+
+  <!-- O QUE É O NEGÓCIO -->
+  <section class="px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px] lg:col-span-5">
+        What the business is
+      </h2>
+      <div class="flex flex-col gap-5 text-[17px] leading-[1.7] text-ink/85 md:text-[18px] lg:col-span-6 lg:col-start-7">
+        <p>
+          It's a high-ticket online business model, which gives you the opportunity to build both active and leveraged income.
+        </p>
+        <p>
+          I want to be transparent about it: this page is here to explain, not to push. If you'd like the full picture, I'm happy to walk you through it in a conversation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA: linha do tempo -->
+  <section class="bg-brand px-5 py-16 text-surface md:px-10 md:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] md:text-[42px]">
+        How it works
+      </h2>
+
+      <ol class="reveal mt-12 grid md:mt-16 md:grid-cols-5">
+        {passos.map((p, i) => (
+          <li class="relative border-t border-surface/30 pb-8 pt-8 md:pb-0 md:pr-4">
+            <span class="absolute -top-[5px] left-0 h-[9px] w-[9px] rounded-full bg-accent" aria-hidden="true"></span>
+            <span class="text-[15px] text-accent">{String(i + 1).padStart(2, "0")}</span>
+            <p class="mt-3 font-display text-[40px] font-medium leading-[1.05] lg:text-[54px]">{p}</p>
+          </li>
+        ))}
+      </ol>
+
+      <p class="mt-10 max-w-[56ch] text-[17px] leading-[1.7] text-surface/85 md:mt-14 md:text-[18px]">
+        There is a system, education, mentorship and community available, but this is still a business. It requires consistency, learning and work.
+      </p>
+    </div>
+  </section>
+
+  <!-- NÃO PRECISA SER INFLUENCER: frases grandes -->
+  <section class="px-5 py-16 md:px-10 md:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px]">
+        You don't need to be an influencer
+      </h2>
+
+      <ul class="mt-10 border-t border-brand/20 md:mt-14">
+        {naoPrecisa.map((t) => (
+          <li class="border-b border-brand/20 py-6 font-display text-[26px] font-light leading-[1.2] tracking-[-0.01em] text-ink md:py-8 md:text-[44px]">
+            {t}
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-8 max-w-[58ch] text-[17px] leading-[1.7] text-ink/85 md:mt-10 md:text-[18px]">
+        There is training, mentorship, a guided system and a community behind you as you learn. What you do need is a willingness to learn, take action and take ownership of what you're building.
+      </p>
+    </div>
+  </section>
+
+  <!-- COM QUEM QUERO TRABALHAR: etiquetas -->
+  <section class="bg-sand px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px]">
+          Who I'm looking to work with
+        </h2>
+        <p class="mt-6 max-w-[40ch] text-[17px] leading-[1.7] text-ink/85">
+          This isn't a quick fix, guaranteed income or a free ride. The support is here. The system is here. The opportunity is here. The work still has to come from you.
+        </p>
+      </div>
+      <ul class="flex flex-wrap content-start gap-3 lg:col-span-6 lg:col-start-7">
+        {procuro.map((p) => (
+          <li class="rounded-full border border-brand/30 px-5 py-2.5 text-[17px] leading-[1.3] text-ink md:text-[19px]">{p}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- COMUNIDADE + MENTORIA -->
+  <section class="bg-taupe px-5 py-16 text-ink md:px-10 md:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <h2 class="text-[16px] font-semibold">Community + mentorship</h2>
+      <p class="mt-6 max-w-[26ch] font-display text-[32px] font-light leading-[1.15] tracking-[-0.015em] md:text-[56px]">
+        One of the biggest parts of this business for me has been the community behind it.
+      </p>
+      <p class="mt-8 max-w-[58ch] text-[17px] leading-[1.7] md:text-[19px]">
+        Mentorship, education, accountability, collaboration, relationships and support are all part of the experience of building it. The community isn't an add-on to the business model; it's an important part of it.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="scroll-mt-24 px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-10 lg:grid-cols-12 lg:gap-8">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px] lg:col-span-5">
+        Online business FAQ
+      </h2>
+      <div class="lg:col-span-7">
+        <FaqTest itens={faq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="bg-sand px-5 py-20 md:px-10 md:py-28">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8">
+        <h2 class="font-display text-[38px] font-light leading-[1.08] tracking-[-0.015em] text-brand md:text-[60px]">
+          Curious about the business? Let's have a real conversation.
+        </h2>
+        <p class="mt-6 max-w-[54ch] text-[17px] leading-[1.7] text-ink/85 md:text-[18px]">
+          I'll answer your questions, explain what the business actually looks like and give you the information you need to decide whether it's something you'd like to explore further.
+        </p>
+      </div>
+      <div class="lg:col-span-4 lg:justify-self-end">
+        <Button href={conectarHref}>Connect with Stephanie</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

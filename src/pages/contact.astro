@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../config/site";
+
+/* TODO: endereço do serviço que vai receber o formulário (Formspree, Web3Forms, etc.).
+   Enquanto for "#", o envio não vai para lugar nenhum. */
+const formAction = "#";
+
+const interesses = [
+  "Beauty Appointment",
+  "Beauty Education",
+  "Business Mentorship",
+  "Online Business",
+  "Other",
+];
+
+const redes = [
+  { nome: "Instagram", href: SITE.social.instagram },
+  { nome: "Facebook", href: SITE.social.facebook },
+  { nome: "Email", href: SITE.social.email ? `mailto:${SITE.social.email}` : "" },
+].filter((r) => r.href);
+
+const campo =
+  "mt-2 w-full rounded-[14px] border border-brand/25 bg-surface px-4 py-3 text-[17px] text-ink transition-colors duration-300 focus:border-brand focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+---
+
+<BaseLayout
+  title="Contact | The Infinite Collective"
+  description="Not sure where you fit? Send Stephanie a message and let her know what brought you here."
+>
+  <section class="px-5 pb-20 pt-8 md:px-10 md:pb-32 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] gap-12 lg:grid-cols-12 lg:gap-8">
+
+      <div class="lg:col-span-5">
+        <h1 class="font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[76px]">
+          Not sure where you fit? Start here.
+        </h1>
+        <p class="mt-6 max-w-[42ch] text-[17px] leading-[1.7] text-ink/85 md:text-[18px]">
+          Whether you're looking for an appointment, interested in education, curious about mentorship or want to learn more about the online business, send me a message and let me know what brought you here.
+        </p>
+
+        {redes.length > 0 && (
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[17px] font-medium text-brand">
+            {redes.map((r) => (
+              <li>
+                <a
+                  href={r.href}
+                  target={r.nome === "Email" ? undefined : "_blank"}
+                  rel={r.nome === "Email" ? undefined : "noopener noreferrer"}
+                  class="underline decoration-[1.5px] underline-offset-[6px] transition-opacity duration-300 hover:opacity-60"
+                >
+                  {r.nome}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <form action={formAction} method="POST" class="flex flex-col gap-6 lg:col-span-6 lg:col-start-7">
+        <!-- Campo escondido contra spam: pessoas não preenchem, robôs sim -->
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <div>
+          <label for="name" class="text-[16px] font-semibold text-brand">Name</label>
+          <input id="name" name="name" type="text" required autocomplete="name" class={campo} />
+        </div>
+
+        <div>
+          <label for="email" class="text-[16px] font-semibold text-brand">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" class={campo} />
+        </div>
+
+        <div>
+          <label for="phone" class="text-[16px] font-semibold text-brand">
+            Phone <span class="font-normal text-muted">(optional)</span>
+          </label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" class={campo} />
+        </div>
+
+        <div>
+          <label for="interest" class="text-[16px] font-semibold text-brand">What are you interested in?</label>
+          <select id="interest" name="interest" required class={campo}>
+            <option value="" disabled selected>Choose one</option>
+            {interesses.map((i) => <option value={i}>{i}</option>)}
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="text-[16px] font-semibold text-brand">Tell me a little more</label>
+          <textarea id="message" name="message" rows="5" required class={campo}></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="inline-flex w-fit rounded-full bg-brand px-9 py-4 text-[17px] font-semibold text-surface transition-colors duration-300 hover:bg-brand-light"
+        >
+          Send message
+        </button>
+      </form>
+
+    </div>
+  </section>
+</BaseLayout>

@@ -1,52 +1,187 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import LinkCards from "../components/LinkCards.astro";
-import About from "../components/About.astro";
+import WorkWithMeCta from "../components/WorkWithMeCta.astro";
+import HeroTest from "../components/HeroTest.astro";
+import Button from "../components/Button.astro";
 import { SITE } from "../config/site";
 
-const sobre = [
-  "I’m a Registered Nurse, aesthetics practitioner, trainer, proud mum and complete coffee addict.",
-  "I’m 26 years old and have built my career around aesthetics, patient safety and helping people feel confident in themselves.",
-  "My nursing background has always shaped the way I work. I’m a perfectionist, I genuinely care about my clients, and I’m always learning, training and investing in my education.",
-  "Outside of aesthetics, I’m a mum to my 5-year-old son, a proud dog mum to two miniature dachshunds, and I’m happiest when I’m travelling or planning my next holiday.",
-  "I never expected aesthetics to change my life the way it has, but turning something I love into a career has been one of the best decisions I’ve ever made.",
-  "And yes — you’ll probably find me with a coffee in hand.",
+/* FOTOS DA STEPHANIE
+   Hero: foto principal. Sobre: use uma foto DIFERENTE da do hero; enquanto não
+   houver uma segunda foto, deixe "false" (a seção funciona bem só com texto). */
+const temFotoHero = true;
+const fotoHero = "/images/img8.webp";
+const fotoPos = "5% 10%"; // enquadramento do hero: "X% Y%"
+const temFotoSobre = true;
+const fotoSobre = "/images/img2.webp";
+
+/* OS TRÊS CAMINHOS
+   Cada card pode ter uma foto de fundo (opcional):
+     foto:    caminho em /public/images (ex: "/images/img4.webp"). Vazio = card de cor lisa.
+     fotoPos: enquadramento da foto, "X% Y%" (0% topo/esquerda, 100% base/direita).
+   Sem foto, o card usa o tom do campo "painel": areia, taupe e azul-marinho. */
+const caminhos = [
+  {
+    publico: "For clients",
+    titulo: "Beauty Services",
+    frase: "Come sit in my chair.",
+    texto:
+      "Professional beauty services with a focus on healthy, intentional results. From structured gel nails to lashes and brows, every service is approached with attention to detail, education and the individual sitting in front of me.",
+    botao: "Explore beauty services",
+    href: "/beauty-services",
+    foto: "",
+    fotoPos: "50% 30%",
+    painel: "bg-sand text-ink",
+    botaoClasses: "bg-brand text-surface group-hover:bg-brand-dark",
+  },
+  {
+    publico: "For beauty professionals",
+    titulo: "Education + Mentorship",
+    frase: "Ready to grow your skills or your business?",
+    texto:
+      "Education goes far beyond learning the steps. Whether you're developing your technical skills or building the business behind them, my education and mentorship are designed to help you understand the why, make intentional decisions and build confidence in what you're doing.",
+    botao: "Explore education + mentorship",
+    href: "/education-mentorship",
+    foto: "",
+    fotoPos: "50% 30%",
+    painel: "bg-taupe text-ink",
+    botaoClasses: "bg-brand text-surface group-hover:bg-brand-dark",
+  },
+  {
+    publico: "For anyone, from any industry",
+    titulo: "Online Business",
+    frase: "Looking to build income differently?",
+    texto:
+      "For those wanting to create an additional income stream outside of traditional service-based work, this is the online business I chose to build alongside my existing businesses. You don't need to be an influencer or have previous experience. You do need to be willing to learn, show up and build.",
+    botao: "Explore the online business",
+    href: "/online-business",
+    foto: "",
+    fotoPos: "50% 30%",
+    painel: "bg-brand text-surface",
+    botaoClasses: "bg-surface text-brand group-hover:bg-sand",
+  },
+];
+
+/* Degradê dos cards com foto (de baixo para cima), em hex.
+   Os dois últimos dígitos são a opacidade: E6=90%, B3=70%, 66=40%. */
+const degradeCard = "linear-gradient(to top, #000000E6 0%, #000000B3 50%, #00000066 100%)";
+
+/* Destaques da Stephanie (vêm da seção de credenciais do brief) */
+const destaques = [
+  "10+ years in the beauty industry",
+  "Three-time Canadian Choice Award winner",
+  "International education and training",
 ];
 ---
 
 <BaseLayout
-  title="Helen Hinchliff - Links"
-  description="Book a treatment or start your training today."
+  title="The Infinite Collective | Beauty, Education + Business"
+  description="One brand, multiple ways to work together: beauty services, education + mentorship and an online business, all with Stephanie."
 >
-  <Hero
-    titulo="Helen Hinchliff"
-    subtitulo="Book a treatment or start your training today."
-    imagem="/images/img6.webp"
-    imagemMobile="/images/img6.webp"
-    alt="Helen Hinchliff"
-    imgMobileX={50}
-    imgMobileY={15}
-    imgDesktopX={50}
-    imgDesktopY={10}
-    centralizado
-    instagram={SITE.social.instagram}
-    facebook={SITE.social.facebook}
-    email={SITE.social.email}
-    tituloTamanho="text-[58px] md:text-[74px]"
-    subtituloTamanho="text-[22px] md:text-[30px]"
-    seta="#links"
-    transicao="#000000"
-    semNavbar
-  />
+  <!-- HERO com foto de fundo (tela cheia) -->
+  <HeroTest
+    titulo={SITE.name}
+    subtitulo={SITE.tagline}
+    frase="One brand. Multiple ways to work together."
+    texto="The Infinite Collective brings together the different businesses I've built over the years: working directly with clients, educating and mentoring other professionals, and building income beyond the treatment room."
+    foto={temFotoHero ? fotoHero : undefined}
+    fotoPos={fotoPos}
+    larguraTitulo="14ch"
+  >
+    <Button href="#paths" variante="claro">Find your path</Button>
+  </HeroTest>
 
-  <LinkCards />
+  <!-- OS TRÊS CAMINHOS -->
+  <section id="paths" class="scroll-mt-20 px-5 md:px-10 xl:scroll-mt-24" aria-label="Three ways to work together">
+    <div class="reveal mx-auto grid max-w-[1280px] overflow-hidden rounded-[24px] lg:grid-cols-3">
+      {caminhos.map((c) => (
+        <article
+          class:list={[
+            "group relative isolate flex min-h-[520px] flex-col overflow-hidden p-8 md:p-10 lg:min-h-[620px]",
+            c.foto ? "bg-brand text-surface" : c.painel,
+          ]}
+        >
+          {c.foto && (
+            <>
+              <img
+                src={c.foto}
+                alt=""
+                class="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                style={`object-position: ${c.fotoPos}`}
+                loading="lazy"
+              />
+              <div class="absolute inset-0 -z-10" style={`background: ${degradeCard}`}></div>
+            </>
+          )}
 
-  <About
-    titulo="Who is Hellen?"
-    paragrafos={sobre}
-    imagem="/images/img6.webp"
-    alt="Helen Hinchliff"
-    imagemPos="50% 20%"
-  />
+          <p class="text-[15px] font-medium opacity-75">{c.publico}</p>
+          <h2 class="mt-4 font-display text-[38px] font-medium leading-[1.05] tracking-[-0.02em] md:text-[46px]">
+            {c.titulo}
+          </h2>
+          <p class="mt-3 max-w-[22ch] font-display text-[22px] italic leading-[1.25] opacity-85 md:text-[25px]">
+            {c.frase}
+          </p>
+
+          <div class="mt-auto pt-12">
+            <p class="max-w-[40ch] text-[16px] leading-[1.65] opacity-90">
+              {c.texto}
+            </p>
+            <!-- O link se estende por todo o card (after:absolute), então o card inteiro é clicável -->
+            <a
+              href={c.href}
+              class:list={[
+                "mt-8 inline-flex rounded-full px-7 py-3 text-[16px] font-semibold transition-colors duration-300 after:absolute after:inset-0",
+                c.foto ? "bg-surface text-brand group-hover:bg-sand" : c.botaoClasses,
+              ]}
+            >
+              {c.botao}
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- UM POUCO SOBRE A STEPHANIE -->
+  <section class="px-5 py-20 md:px-10 md:py-32">
+    <div class="mx-auto max-w-[1280px]">
+      <div class="grid items-center gap-10 md:grid-cols-12 md:gap-8">
+
+        {temFotoSobre && (
+          <div class="md:col-span-5">
+            <img
+              src={fotoSobre}
+              alt="Stephanie"
+              class="aspect-[4/5] w-full rounded-[28px] object-cover"
+              style="object-position: 50% 20%"
+              loading="lazy"
+            />
+          </div>
+        )}
+
+        <div class:list={[temFotoSobre ? "md:col-span-6 md:col-start-7" : "md:col-span-9"]}>
+          <h2 class="font-display text-[38px] font-light leading-[1.08] tracking-[-0.015em] text-brand md:text-[56px]">
+            Meet Stephanie
+          </h2>
+          <p class="mt-6 max-w-[52ch] text-[17px] leading-[1.7] text-ink/80 md:text-[19px]">
+            I'm an award-winning beauty business owner, educator and mentor. My work has grown from working with clients in the treatment room to teaching and mentoring other professionals and building an online business, and each part has added to the others.
+          </p>
+          <div class="mt-8">
+            <Button href="/about">Read my story</Button>
+          </div>
+        </div>
+
+      </div>
+
+      <ul class="mt-14 grid border-t border-brand/20 md:mt-20 md:grid-cols-3">
+        {destaques.map((d) => (
+          <li class="border-b border-brand/20 py-5 font-display text-[22px] leading-[1.25] text-ink md:border-b-0 md:py-7 md:pr-6 md:text-[26px]">
+            {d}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <WorkWithMeCta />
 </BaseLayout>

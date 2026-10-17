@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../config/site";
+
+/* TEXTO BASE: revisar com a Stephanie (e, se possível, com um profissional jurídico)
+   antes de publicar. */
+const atualizado = "[add date]";
+const contato = SITE.social.email || "the Contact page";
+
+const secoes = [
+  {
+    titulo: "Using this website",
+    texto: [
+      "By using this website you agree to these terms. The content is provided for general information about The Infinite Collective and the ways you can work with Stephanie.",
+    ],
+  },
+  {
+    titulo: "Appointments, education and mentorship",
+    texto: [
+      "Appointments, training and mentorship are arranged through a direct conversation, not through this website. The details of each service, including pricing, deposits and cancellation and rescheduling policies, are confirmed with you before you book.",
+      "The Beauty FAQs + Policies page gives general information and is updated from time to time.",
+    ],
+  },
+  {
+    titulo: "The online business",
+    texto: [
+      "Information about the online business is shared so you can decide whether to explore it further. It is not a promise of results, and nothing on this site guarantees income. Results depend on the work and decisions of each individual.",
+    ],
+  },
+  {
+    titulo: "Content and ownership",
+    texto: [
+      "The text, images, branding and other material on this site belong to The Infinite Collective or are used with permission. Please don't copy, reproduce or reuse them without written permission.",
+    ],
+  },
+  {
+    titulo: "Links to other sites",
+    texto: [
+      "This site may link to third-party websites and platforms. I'm not responsible for their content or practices.",
+    ],
+  },
+  {
+    titulo: "Limits of liability",
+    texto: [
+      "I work to keep the information on this site accurate and up to date, but it's provided as is. To the extent allowed by law, I'm not liable for losses arising from the use of this website.",
+    ],
+  },
+  {
+    titulo: "Changes and questions",
+    texto: [
+      `I may update these terms from time to time. If you have any questions about them, you can reach me through ${contato}.`,
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Terms | The Infinite Collective"
+  description="The terms for using The Infinite Collective website."
+>
+  <section class="px-5 pb-20 pt-8 md:px-10 md:pb-32 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-5">
+        <h1 class="font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[72px]">
+          Terms
+        </h1>
+        <p class="mt-5 text-[16px] text-muted">Last updated: {atualizado}</p>
+      </div>
+
+      <div class="flex flex-col gap-10 lg:col-span-7">
+        {secoes.map((s) => (
+          <div>
+            <h2 class="font-display text-[26px] font-medium leading-[1.15] text-brand md:text-[30px]">{s.titulo}</h2>
+            <div class="mt-3 flex flex-col gap-4 text-[17px] leading-[1.7] text-ink/85">
+              {s.texto.map((p) => <p class="max-w-[60ch]">{p}</p>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

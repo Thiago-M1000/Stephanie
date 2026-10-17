@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const principios = [
+  "Understand the why",
+  "Make intentional decisions",
+  "Have continued support",
+];
+
+const caminhos = [
+  {
+    titulo: "Technical beauty education",
+    texto:
+      "For artists looking to learn new services, strengthen their existing skills or continue their education.",
+    detalhe: "Lash lift + brow lamination training, from beginner to advanced, in a small group, 1:1 or virtual.",
+    botao: "Explore beauty education",
+    href: "/beauty-education",
+    painel: "bg-sand text-ink",
+    linha: "border-brand/25",
+    botaoClasses: "bg-brand text-surface group-hover:bg-brand-dark",
+  },
+  {
+    titulo: "Business mentorship",
+    texto:
+      "For service providers looking for individualized guidance, accountability and support with the business behind their skills.",
+    detalhe: "1:1 mentorship on pricing, branding, client experience, marketing and more.",
+    botao: "Explore business mentorship",
+    href: "/business-mentorship",
+    painel: "bg-brand text-surface",
+    linha: "border-surface/30",
+    botaoClasses: "bg-surface text-brand group-hover:bg-sand",
+  },
+];
+---
+
+<BaseLayout
+  title="Education + Mentorship | The Infinite Collective"
+  description="Technical beauty education and 1:1 business mentorship focused on understanding the why behind what you do."
+>
+  <!-- INTRODUÇÃO -->
+  <section class="px-5 pb-16 pt-8 md:px-10 md:pb-24 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12 lg:items-end lg:gap-8">
+      <h1 class="font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[76px] lg:col-span-7">
+        Education that goes beyond following the steps.
+      </h1>
+
+      <div class="flex flex-col gap-5 text-[17px] leading-[1.7] text-ink/85 md:text-[18px] lg:col-span-5">
+        <p>
+          My approach to education is about understanding the why behind what you're doing, learning how to make intentional decisions and having continued support as you put those skills into practice.
+        </p>
+        <p>
+          Whether you're learning a technical skill or working on the business behind it, I want education to leave you with more than information. I want you to understand how to actually apply it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OS TRÊS PRINCÍPIOS -->
+  <section class="px-5 md:px-10" aria-label="How I teach">
+    <ul class="mx-auto grid max-w-[1280px] border-t border-brand/20 md:grid-cols-3">
+      {principios.map((p) => (
+        <li class="border-b border-brand/20 py-6 font-display text-[26px] font-light leading-[1.15] tracking-[-0.01em] text-ink md:border-b-0 md:py-8 md:pr-6 md:text-[32px]">
+          {p}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- OS DOIS CAMINHOS -->
+  <section class="px-5 pb-20 pt-12 md:px-10 md:pb-28 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] overflow-hidden rounded-[28px] md:grid-cols-2">
+      {caminhos.map((c) => (
+        <article class:list={["group relative flex flex-col p-8 md:p-12 md:min-h-[480px]", c.painel]}>
+          <h2 class="font-display text-[34px] font-medium leading-[1.1] tracking-[-0.015em] md:text-[44px]">
+            {c.titulo}
+          </h2>
+          <p class="mt-5 max-w-[38ch] text-[17px] leading-[1.65] opacity-90 md:text-[18px]">
+            {c.texto}
+          </p>
+          <p class:list={["mt-8 max-w-[38ch] border-t pt-5 text-[16px] leading-[1.6] opacity-80", c.linha]}>
+            {c.detalhe}
+          </p>
+          <div class="mt-auto pt-10">
+            <a
+              href={c.href}
+              class:list={[
+                "inline-flex rounded-full px-7 py-3 text-[16px] font-semibold transition-colors duration-300 after:absolute after:inset-0",
+                c.botaoClasses,
+              ]}
+            >
+              {c.botao}
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- FECHAMENTO -->
+  <section class="bg-sand px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto flex max-w-[1280px] flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+      <p class="max-w-[20ch] font-display text-[32px] font-light leading-[1.1] tracking-[-0.015em] text-brand md:text-[48px]">
+        Not sure which one fits you?
+      </p>
+      <a
+        href="/contact"
+        class="inline-flex rounded-full bg-brand px-9 py-4 text-[17px] font-semibold text-surface transition-colors duration-300 hover:bg-brand-light"
+      >
+        Start a conversation
+      </a>
+    </div>
+  </section>
+</BaseLayout>

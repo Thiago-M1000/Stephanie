@@ -1,0 +1,170 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+/* FOTOS DOS SERVIÇOS (opcional): preencha "foto" com o caminho em /public/images
+   (ex: "/images/nails.webp") e "fotoAlt" com a descrição. Sem foto, nada aparece. */
+const servicos = [
+  {
+    id: "gel-nails",
+    curto: "Gel nails",
+    titulo: "Structured gel nails",
+    destaque: "",
+    foto: "",
+    fotoAlt: "",
+    texto: [
+      "Structured gel nails with an emphasis on nail health, proper structure, longevity and artistry.",
+      "Services are available as a natural-length overlay to strengthen and enhance the natural nail, or with added length using extensions.",
+      "My focus is on creating nails that are properly structured for your natural nail and lifestyle, while still leaving plenty of room for creativity and nail art.",
+    ],
+  },
+  {
+    id: "lash-extensions",
+    curto: "Lash extensions",
+    titulo: "Evarlei natural volume lash extensions",
+    destaque: "Evarlei signature technique",
+    foto: "",
+    fotoAlt: "",
+    texto: [
+      "Beautiful, natural-looking volume with 4-6 week retention, customized to your natural lashes, eye shape and desired result.",
+      "This technique is ideal if you want soft, wearable volume with exceptional retention while maintaining the health and integrity of your natural lashes.",
+    ],
+  },
+  {
+    id: "lash-lift",
+    curto: "Lash lift",
+    titulo: "Eco lash lift",
+    destaque: "",
+    foto: "",
+    fotoAlt: "",
+    texto: [
+      "A customizable lash lifting system with a health-first approach.",
+      "Every treatment is adapted to your natural lashes, eye shape, lash history and desired result. Shield selection, technique and product application are chosen for you rather than using the same approach on every client.",
+      "The Eco Lift Premium System prioritizes the health and integrity of your natural lashes while creating beautiful, long-lasting results.",
+    ],
+  },
+  {
+    id: "brow-lamination",
+    curto: "Brow lamination",
+    titulo: "Eco brow lamination",
+    destaque: "",
+    foto: "",
+    fotoAlt: "",
+    texto: [
+      "Using the same customizable, health-first Eco system, brow lamination is designed around your natural brow growth, hair condition and desired result.",
+      "Each treatment considers the individual brow rather than creating one standard laminated look, so we can create anything from a soft, natural finish to something more defined while continuing to prioritize the health and integrity of the brow hair.",
+    ],
+  },
+];
+
+const principios = [
+  "Healthy, intentional results",
+  "Quality professional products",
+  "Experience and continued education",
+  "Attention to detail",
+  "Client education",
+  "Techniques chosen for you",
+];
+---
+
+<BaseLayout
+  title="Beauty Services | The Infinite Collective"
+  description="Structured gel nails, Evarlei natural volume lashes, Eco lash lift and Eco brow lamination, with a focus on healthy, intentional results."
+>
+  <!-- INTRODUÇÃO -->
+  <section class="px-5 pb-12 pt-8 md:px-10 md:pb-16 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="font-display text-[48px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[84px]">
+          Beauty services
+        </h1>
+        <p class="mt-8 max-w-[54ch] text-[18px] leading-[1.7] text-ink/85 md:text-[20px]">
+          Every service is built around healthy, intentional results. I use quality professional products, bring experience and continued education to each appointment, and pay close attention to the details.
+        </p>
+        <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.7] text-ink/80 md:text-[18px]">
+          I take the time to explain what I'm doing and why, and I choose techniques based on you rather than taking a one-size-fits-all approach.
+        </p>
+      </div>
+
+      <ul class="border-t border-brand/20 lg:col-span-4 lg:col-start-9 lg:self-end">
+        {principios.map((p) => (
+          <li class="border-b border-brand/20 py-3 font-display text-[21px] leading-[1.25] text-ink md:text-[23px]">{p}</li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Atalhos para cada serviço -->
+    <nav aria-label="Jump to a service" class="mx-auto mt-12 flex max-w-[1280px] flex-wrap gap-3 md:mt-16">
+      {servicos.map((s) => (
+        <a
+          href={`#${s.id}`}
+          class="rounded-full border border-brand/30 px-5 py-2.5 text-[16px] font-medium text-brand transition-colors duration-300 hover:bg-brand hover:text-surface"
+        >
+          {s.curto}
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <!-- SERVIÇOS (fundos alternados) -->
+  {servicos.map((s, i) => (
+    <section
+      id={s.id}
+      aria-label={s.titulo}
+      class:list={["scroll-mt-20 px-5 py-14 md:px-10 md:py-24 xl:scroll-mt-24", i % 2 === 0 ? "bg-surface" : "bg-sand"]}
+    >
+      <div class="mx-auto grid max-w-[1280px] gap-8 md:grid-cols-12 md:gap-8">
+        <div class="md:col-span-5">
+          <h2 class="max-w-[16ch] font-display text-[34px] font-medium leading-[1.08] tracking-[-0.015em] text-brand md:text-[48px]">
+            {s.titulo}
+          </h2>
+          {s.destaque && (
+            <p class="mt-3 font-display text-[19px] italic text-muted md:text-[21px]">{s.destaque}</p>
+          )}
+          {s.foto && (
+            <img
+              src={s.foto}
+              alt={s.fotoAlt}
+              class="mt-8 aspect-[4/5] w-full max-w-[420px] rounded-[28px] object-cover"
+              loading="lazy"
+            />
+          )}
+        </div>
+
+        <div class="md:col-span-6 md:col-start-7">
+          <div class="flex flex-col gap-4 text-[17px] leading-[1.7] text-ink/85 md:text-[18px]">
+            {s.texto.map((p) => <p class="max-w-[54ch]">{p}</p>)}
+          </div>
+          <a
+            href="/book-an-appointment"
+            class="mt-8 inline-flex rounded-full bg-brand px-8 py-3 text-[16px] font-semibold text-surface transition-colors duration-300 hover:bg-brand-light"
+          >
+            Book an appointment
+          </a>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- FECHAMENTO -->
+  <section class="bg-brand px-5 py-16 text-surface md:px-10 md:py-24">
+    <div class="mx-auto flex max-w-[1280px] flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="max-w-[20ch] font-display text-[34px] font-light leading-[1.1] tracking-[-0.015em] md:text-[52px]">
+          Not sure which service is right for you?
+        </p>
+        <a
+          href="/beauty-faqs"
+          class="mt-6 inline-block text-[17px] font-medium text-accent underline decoration-[1.5px] underline-offset-[6px] transition-opacity duration-300 hover:opacity-70"
+        >
+          Read the FAQs + policies
+        </a>
+      </div>
+      <a
+        href="/book-an-appointment"
+        class="inline-flex shrink-0 rounded-full bg-surface px-9 py-4 text-[17px] font-semibold text-brand transition-colors duration-300 hover:bg-sand"
+      >
+        Start with a conversation
+      </a>
+    </div>
+  </section>
+</BaseLayout>

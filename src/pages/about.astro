@@ -1,0 +1,139 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import WorkWithMeCta from "../components/WorkWithMeCta.astro";
+
+/* FOTO DA STEPHANIE: coloque o arquivo em /public/images e troque para true */
+const temFoto = true;
+const foto = "/images/img12.webp";
+
+const historia = [
+  "Beauty professional",
+  "Business owner",
+  "Educator",
+  "Mentor",
+  "Online entrepreneur",
+];
+
+const credenciais = [
+  "10+ years in the beauty industry",
+  "Full-time beauty business owner",
+  "Three-time Canadian Choice Award winner",
+  "Beauty educator",
+  "Business mentor",
+  "Continued investment in advanced education",
+  "International education and training",
+  "Evarlei technique certification",
+  "Eco Lift Premium System educator",
+];
+
+/* SEÇÃO PESSOAL: cada item vira um parágrafo, escrito no tom da Stephanie
+   (conversacional, humano). Enquanto estiver vazio, aparece um aviso. */
+const pessoal: string[] = [];
+---
+
+<BaseLayout
+  title="About Stephanie | The Infinite Collective"
+  description="Meet Stephanie, the common thread connecting beauty, education, mentorship and online business at The Infinite Collective."
+>
+  <!-- INTRODUÇÃO -->
+  <section class="px-5 pb-16 pt-8 md:px-10 md:pb-24 md:pt-16">
+    <div class="mx-auto grid max-w-[1280px] items-center gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="font-display text-[48px] font-light leading-[1] tracking-[-0.025em] text-brand md:text-[88px]">
+          About Stephanie
+        </h1>
+        <p class="mt-8 max-w-[52ch] text-[18px] leading-[1.7] text-ink/85 md:text-[20px]">
+          I'm the common thread connecting everything at The Infinite Collective. Here's how it came together.
+        </p>
+      </div>
+      <div class="lg:col-span-5">
+        {temFoto ? (
+          <img
+            src={foto}
+            alt="Stephanie"
+            class="aspect-[4/5] w-full rounded-[28px] object-cover"
+            style="object-position: 50% 15%"
+            fetchpriority="high"
+          />
+        ) : (
+          <div class="flex aspect-[4/5] w-full items-end rounded-[28px] bg-sand p-6">
+            <p class="text-[14px] text-muted">Photo of Stephanie goes here</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- MINHA HISTÓRIA -->
+  <section class="bg-sand px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto max-w-[1280px]">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px]">
+        My story
+      </h2>
+      <ol class="mt-10 grid border-t border-brand/20 sm:grid-cols-5">
+        {historia.map((h) => (
+          <li class="border-b border-brand/20 py-5 font-display text-[24px] font-medium leading-[1.15] text-ink sm:border-b-0 sm:py-8 sm:pr-4 md:text-[28px]">
+            {h}
+          </li>
+        ))}
+      </ol>
+      <p class="mt-8 max-w-[56ch] text-[17px] leading-[1.7] text-ink/85 md:text-[18px]">
+        I haven't moved on from one thing to another. Each stage has added another layer to what I do today.
+      </p>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIA + CREDENCIAIS -->
+  <section class="px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px] lg:col-span-5">
+        Experience + credentials
+      </h2>
+      <ul class="border-t border-brand/15 lg:col-span-6 lg:col-start-7">
+        {credenciais.map((c) => (
+          <li class="border-b border-brand/15 py-4 text-[18px] leading-[1.4] text-ink md:text-[20px]">{c}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- POR QUE A INFINITE COLLECTIVE EXISTE -->
+  <section class="bg-brand px-5 py-16 text-surface md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] md:text-[42px] lg:col-span-5">
+        Why The Infinite Collective exists
+      </h2>
+      <div class="flex flex-col gap-5 text-[17px] leading-[1.7] text-surface/90 md:text-[18px] lg:col-span-6 lg:col-start-7">
+        <p>The Infinite Collective exists because my business has grown beyond doing one thing.</p>
+        <p>
+          I love working with clients. I love the artistry and technical side of this industry. I love educating other professionals and watching them take what they've learned and make it their own. I love helping people build businesses that create more options for their lives.
+        </p>
+        <p>
+          The Infinite Collective brings all of those pieces together. It's a place for beauty, education, business and growth, and there are different ways to be part of it depending on what you're looking for.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO PESSOAL -->
+  <section class="px-5 py-16 md:px-10 md:py-24">
+    <div class="mx-auto grid max-w-[1280px] gap-8 lg:grid-cols-12">
+      <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] text-brand md:text-[42px] lg:col-span-5">
+        Beyond the work
+      </h2>
+      <div class="flex flex-col gap-5 text-[17px] leading-[1.7] text-ink/85 md:text-[18px] lg:col-span-6 lg:col-start-7">
+        {pessoal.length > 0 ? (
+          pessoal.map((p) => <p class="max-w-[56ch]">{p}</p>)
+        ) : (
+          <p class="text-muted">A little about who I am outside of work will be added here.</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <WorkWithMeCta
+    titulo="How would you like to work together?"
+    texto="There are a few different ways we can connect depending on what you're looking for."
+  />
+</BaseLayout>

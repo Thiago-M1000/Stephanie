@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const caminhos = [
+  {
+    titulo: "Beauty Services",
+    frase: "Looking for nails, lashes or brows?",
+    botao: "Book an appointment",
+    href: "/book-an-appointment",
+    painel: "bg-sand text-ink",
+    botaoClasses: "bg-brand text-surface group-hover:bg-brand-dark",
+  },
+  {
+    titulo: "Education + Mentorship",
+    frase: "Looking to strengthen your technical skills or grow the business behind them?",
+    botao: "Explore education + mentorship",
+    href: "/education-mentorship",
+    painel: "bg-taupe text-ink",
+    botaoClasses: "bg-brand text-surface group-hover:bg-brand-dark",
+  },
+  {
+    titulo: "Online Business",
+    frase: "Looking for a different way to build income?",
+    botao: "Explore the online business",
+    href: "/online-business",
+    painel: "bg-brand text-surface",
+    botaoClasses: "bg-surface text-brand group-hover:bg-sand",
+  },
+];
+---
+
+<BaseLayout
+  title="Work With Me | The Infinite Collective"
+  description="Choose the path that brought you here: beauty services, education + mentorship or the online business."
+>
+  <section class="px-5 pb-20 pt-8 md:px-10 md:pb-32 md:pt-16">
+    <div class="mx-auto max-w-[1280px]">
+
+      <h1 class="max-w-[16ch] font-display text-[44px] font-light leading-[1.02] tracking-[-0.025em] text-brand md:text-[76px]">
+        How would you like to work together?
+      </h1>
+      <p class="mt-6 max-w-[52ch] text-[17px] leading-[1.65] text-ink/80 md:text-[19px]">
+        Whether you're here for yourself, your skills, your business or something completely new, choose the path that brought you here.
+      </p>
+
+      <div class="mt-12 grid overflow-hidden rounded-[28px] md:mt-16 lg:grid-cols-3">
+        {caminhos.map((c) => (
+          <article class:list={["group relative flex flex-col p-8 md:p-10 lg:min-h-[380px]", c.painel]}>
+            <h2 class="font-display text-[32px] font-medium leading-[1.1] tracking-[-0.015em] md:text-[38px]">
+              {c.titulo}
+            </h2>
+            <p class="mt-4 max-w-[30ch] font-display text-[21px] italic leading-[1.3] opacity-85 md:text-[23px]">
+              {c.frase}
+            </p>
+            <div class="mt-auto pt-10">
+              <a
+                href={c.href}
+                class:list={[
+                  "inline-flex rounded-full px-7 py-3 text-[16px] font-semibold transition-colors duration-300 after:absolute after:inset-0",
+                  c.botaoClasses,
+                ]}
+              >
+                {c.botao}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
