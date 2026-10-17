@@ -16,7 +16,7 @@ export const SITE = {
 
   /** Redes sociais. Campos vazios não aparecem no rodapé. */
   social: {
-    instagram: "",
+    instagram: "https://www.instagram.com/the.infinite.co/",
     facebook: "",
     email: "",
   },
@@ -41,5 +41,5 @@ export const SITE = {
   ],
 
   /** Crédito do site no rodapé. Sem href, o nome aparece sem link. */
-  credit: { texto: "Website built by", nome: "WeBeautyDesign", href: "" },
+  credit: { texto: "Website built by", nome: "WeBeautyDesign", href: "https://www.instagram.com/webeautydesign/" },
 };
