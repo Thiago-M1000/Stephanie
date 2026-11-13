@@ -5,27 +5,22 @@ import HeroTest from "../components/HeroTest.astro";
 import Button from "../components/Button.astro";
 import { SITE } from "../config/site";
 
-/* FOTOS DA STEPHANIE
-   Hero: foto principal. Sobre: use uma foto DIFERENTE da do hero; enquanto não
-   houver uma segunda foto, deixe "false" (a seção funciona bem só com texto). */
+/* Troque fotoHero pela nova foto profissional quando ela estiver em public/images. */
 const temFotoHero = true;
-const fotoHero = "/images/img8.webp";
-const fotoPos = "5% 10%"; // enquadramento do hero: "X% Y%"
+const fotoHero = "/images/img6.webp";
+const fotoPos = "5% 0%";
 const temFotoSobre = true;
 const fotoSobre = "/images/img2.webp";
 
-/* OS TRÊS CAMINHOS
-   Cada card pode ter uma foto de fundo (opcional):
-     foto:    caminho em /public/images (ex: "/images/img4.webp"). Vazio = card de cor lisa.
-     fotoPos: enquadramento da foto, "X% Y%" (0% topo/esquerda, 100% base/direita).
-   Sem foto, o card usa o tom do campo "painel": areia, taupe e azul-marinho. */
+/* Preencha foto com um caminho de /public/images para usar uma imagem no card.
+   fotoPos define o enquadramento como "X% Y%". */
 const caminhos = [
   {
     publico: "For clients",
     titulo: "Beauty Services",
     frase: "Come sit in my chair.",
     texto:
-      "Professional beauty services with a focus on healthy, intentional results. From structured gel nails to lashes and brows, every service is approached with attention to detail, education and the individual sitting in front of me.",
+      "Bringing a higher standard of luxury beauty services to the Okanagan. From structured gel nails to lashes and brows, every service is approached with care, intention and attention to detail. With a focus on education, quality products and techniques that support long term health, my goal is to create beautiful, lasting results while making sure every client feels comfortable, confident and cared for.",
     botao: "Explore beauty services",
     href: "/beauty-services",
     foto: "",
@@ -38,7 +33,7 @@ const caminhos = [
     titulo: "Education + Mentorship",
     frase: "Ready to grow your skills or your business?",
     texto:
-      "Education goes far beyond learning the steps. Whether you're developing your technical skills or building the business behind them, my education and mentorship are designed to help you understand the why, make intentional decisions and build confidence in what you're doing.",
+      "Great education goes beyond learning a technique. From technical training to business mentorship, my approach focuses on understanding the why, building confidence and creating a community where continued support and collaboration help you grow long after the initial training.",
     botao: "Explore education + mentorship",
     href: "/education-mentorship",
     foto: "",
@@ -51,7 +46,7 @@ const caminhos = [
     titulo: "Online Business",
     frase: "Looking to build income differently?",
     texto:
-      "For those wanting to create an additional income stream outside of traditional service-based work, this is the online business I chose to build alongside my existing businesses. You don't need to be an influencer or have previous experience. You do need to be willing to learn, show up and build.",
+      "For those looking to create an additional income stream outside of traditional service based work, this is the online business I've chosen to build alongside my existing business. You don't need to be an influencer or have previous experience. What matters is being open to learning, willing to put in the work and ready to build something of your own.",
     botao: "Explore the online business",
     href: "/online-business",
     foto: "",
@@ -61,15 +56,12 @@ const caminhos = [
   },
 ];
 
-/* Degradê dos cards com foto (de baixo para cima), em hex.
-   Os dois últimos dígitos são a opacidade: E6=90%, B3=70%, 66=40%. */
 const degradeCard = "linear-gradient(to top, #000000E6 0%, #000000B3 50%, #00000066 100%)";
 
-/* Destaques da Stephanie (vêm da seção de credenciais do brief) */
 const destaques = [
-  "10+ years in the beauty industry",
-  "Three-time Canadian Choice Award winner",
-  "International education and training",
+  { destaque: "10+", descricao: "Years in the beauty industry" },
+  { destaque: "3×", descricao: "Canadian Choice Award winner" },
+  { destaque: "International", descricao: "Education and training" },
 ];
 ---
 
@@ -77,12 +69,11 @@ const destaques = [
   title="The Infinite Collective | Beauty, Education + Business"
   description="One brand, multiple ways to work together: beauty services, education + mentorship and an online business, all with Stephanie."
 >
-  <!-- HERO com foto de fundo (tela cheia) -->
   <HeroTest
     titulo={SITE.name}
-    subtitulo={SITE.tagline}
-    frase="One brand. Multiple ways to work together."
-    texto="The Infinite Collective brings together the different businesses I've built over the years: working directly with clients, educating and mentoring other professionals, and building income beyond the treatment room."
+    subtitulo="Beauty • Education • Business"
+    frase="More than one way to grow."
+    texto="Bringing together my passion for beauty, education, mentorship and entrepreneurship. Different opportunities, one collective built around connection, community and helping others grow."
     foto={temFotoHero ? fotoHero : undefined}
     fotoPos={fotoPos}
     larguraTitulo="14ch"
@@ -90,13 +81,12 @@ const destaques = [
     <Button href="#paths" variante="claro">Find your path</Button>
   </HeroTest>
 
-  <!-- OS TRÊS CAMINHOS -->
-  <section id="paths" class="scroll-mt-20 px-5 md:px-10 xl:scroll-mt-24" aria-label="Three ways to work together">
-    <div class="reveal mx-auto grid max-w-[1280px] overflow-hidden rounded-[24px] lg:grid-cols-3">
+  <section id="paths" class="mt-10 scroll-mt-20 px-5 md:mt-16 md:px-10 xl:scroll-mt-24" aria-label="Three ways to work together">
+    <div class="reveal mx-auto grid max-w-[1280px] gap-5 lg:grid-cols-3">
       {caminhos.map((c) => (
         <article
           class:list={[
-            "group relative isolate flex min-h-[520px] flex-col overflow-hidden p-8 md:p-10 lg:min-h-[620px]",
+            "group relative isolate flex min-w-0 flex-col overflow-hidden rounded-[24px] p-7 sm:p-8 xl:p-10",
             c.foto ? "bg-brand text-surface" : c.painel,
           ]}
         >
@@ -121,15 +111,14 @@ const destaques = [
             {c.frase}
           </p>
 
-          <div class="mt-auto pt-12">
+          <div class="mt-auto pt-6">
             <p class="max-w-[40ch] text-[16px] leading-[1.65] opacity-90">
               {c.texto}
             </p>
-            <!-- O link se estende por todo o card (after:absolute), então o card inteiro é clicável -->
             <a
               href={c.href}
               class:list={[
-                "mt-8 inline-flex rounded-full px-7 py-3 text-[16px] font-semibold transition-colors duration-300 after:absolute after:inset-0",
+                "mt-8 inline-flex rounded-full px-7 py-3 text-[16px] font-semibold uppercase transition-colors duration-300 after:absolute after:inset-0",
                 c.foto ? "bg-surface text-brand group-hover:bg-sand" : c.botaoClasses,
               ]}
             >
@@ -141,11 +130,9 @@ const destaques = [
     </div>
   </section>
 
-  <!-- UM POUCO SOBRE A STEPHANIE -->
   <section class="px-5 py-20 md:px-10 md:py-32">
     <div class="mx-auto max-w-[1280px]">
       <div class="grid items-center gap-10 md:grid-cols-12 md:gap-8">
-
         {temFotoSobre && (
           <div class="md:col-span-5">
             <img
@@ -162,26 +149,42 @@ const destaques = [
           <h2 class="font-display text-[38px] font-light leading-[1.08] tracking-[-0.015em] text-brand md:text-[56px]">
             Meet Stephanie
           </h2>
-          <p class="mt-6 max-w-[52ch] text-[17px] leading-[1.7] text-ink/80 md:text-[19px]">
-            I'm an award-winning beauty business owner, educator and mentor. My work has grown from working with clients in the treatment room to teaching and mentoring other professionals and building an online business, and each part has added to the others.
-          </p>
-          <div class="mt-8">
+          <div class="mt-6 max-w-[52ch] space-y-4 text-[17px] leading-[1.7] text-ink/80 md:text-[19px]">
+            <p>
+              I am an award winning beauty business owner, educator, mentor and entrepreneur with over a decade of experience building businesses around the things I'm passionate about.
+            </p>
+            <p>
+              What started behind the treatment table has grown into something much bigger, with a passion for bringing people together through meaningful connections, collaboration and community. I believe success is even more rewarding when we create opportunities to learn from one another, support each other's growth and build something greater together.
+            </p>
+          </div>
+          <div class="mt-8 uppercase">
             <Button href="/about">Read my story</Button>
           </div>
         </div>
-
       </div>
 
-      <ul class="mt-14 grid border-t border-brand/20 md:mt-20 md:grid-cols-3">
-        {destaques.map((d) => (
-          <li class="border-b border-brand/20 py-5 font-display text-[22px] leading-[1.25] text-ink md:border-b-0 md:py-7 md:pr-6 md:text-[26px]">
-            {d}
-          </li>
-        ))}
-      </ul>
+      <section
+        aria-labelledby="stephanie-credentials"
+        class="mt-14 rounded-[28px] bg-sand px-5 py-8 text-center md:mt-20 md:px-8 md:py-10"
+      >
+        <h3 id="stephanie-credentials" class="font-display text-[28px] font-medium leading-tight text-brand md:text-[34px]">
+          Experience &amp; Recognition
+        </h3>
+        <ul class="mt-6 grid divide-y divide-brand/15 border-t border-brand/15 md:grid-cols-3 md:divide-x md:divide-y-0">
+          {destaques.map(({ destaque, descricao }) => (
+            <li class="px-3 py-5 md:pt-7 md:pb-2">
+              <span class="block font-display text-[34px] font-medium leading-none tracking-tight text-brand lg:text-[42px]">
+                {destaque}
+              </span>
+              <span class="mt-2 block text-[16px] leading-snug text-ink/80">
+                {descricao}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   </section>
 
-  <!-- CTA FINAL -->
   <WorkWithMeCta />
 </BaseLayout>
