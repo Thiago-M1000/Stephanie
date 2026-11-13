@@ -8,7 +8,8 @@ import { SITE } from "../config/site";
 /* Troque fotoHero pela nova foto profissional quando ela estiver em public/images. */
 const temFotoHero = true;
 const fotoHero = "/images/img6.webp";
-const fotoPos = "5% 0%";
+const fotoPosMobile = "35% 0%";
+const fotoPosDesktop = "50% 0%";
 const temFotoSobre = true;
 const fotoSobre = "/images/img2.webp";
 
@@ -75,7 +76,8 @@ const destaques = [
     frase="More than one way to grow."
     texto="Bringing together my passion for beauty, education, mentorship and entrepreneurship. Different opportunities, one collective built around connection, community and helping others grow."
     foto={temFotoHero ? fotoHero : undefined}
-    fotoPos={fotoPos}
+    fotoPos={fotoPosDesktop}
+    fotoPosMobile={fotoPosMobile}
     larguraTitulo="14ch"
   >
     <Button href="#paths" variante="claro">Find your path</Button>

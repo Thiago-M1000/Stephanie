@@ -1,7 +1,7 @@
 ---
 /* Hero de tela cheia com foto de fundo e degradê.
    Uso:
-     <HeroTest titulo="..." texto="..." foto="/images/img3.webp" fotoPos="50% 25%">
+     <HeroTest titulo="..." texto="..." foto="/images/img3.webp" fotoPos="50% 25%" fotoPosMobile="50% 0%">
        <Button href="/contact" variante="claro">Texto</Button>
      </HeroTest>
    Tudo que for colocado dentro do <HeroTest> aparece como botões, abaixo do texto.
@@ -18,8 +18,10 @@ interface Props {
   texto?: string;
   /** Caminho da foto em /public/images */
   foto?: string;
-  /** Enquadramento da foto, "X% Y%" (0% topo/esquerda, 100% base/direita) */
+  /** Enquadramento no desktop, em "X% Y%" */
   fotoPos?: string;
+  /** Enquadramento no mobile, em "X% Y%". Usa fotoPos se omitido. */
+  fotoPosMobile?: string;
   /** Degradê sobre a foto, de baixo para cima, em hex.
       Os dois últimos dígitos são a opacidade: FF=100%, B3=70%, 80=50%, 33=20%. */
   degrade?: string;
@@ -36,6 +38,7 @@ const {
   texto,
   foto,
   fotoPos = "50% 25%",
+  fotoPosMobile = fotoPos,
   degrade = "linear-gradient(to top, #000000 0%, #000000B3 35%, #00000080 65%, #00000033 100%)",
   degradeTopo = "linear-gradient(to bottom, #00000066 0%, #00000000 22%)",
   larguraTitulo = "12ch",
@@ -59,8 +62,8 @@ const {
       <img
         src={foto}
         alt=""
-        class="absolute inset-0 -z-20 h-full w-full object-cover"
-        style={`object-position: ${fotoPos}`}
+        class="absolute inset-0 -z-20 h-full w-full object-cover [object-position:var(--hero-pos-mobile)] md:[object-position:var(--hero-pos-desktop)]"
+        style={{ "--hero-pos-mobile": fotoPosMobile, "--hero-pos-desktop": fotoPos }}
         fetchpriority="high"
       />
       <div class="absolute inset-0 -z-10" style={`background: ${degradeTopo}, ${degrade}`}></div>
